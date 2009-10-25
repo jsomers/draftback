@@ -1,2 +1,199 @@
-<h1>Drafts#compose</h1>
-<p>Find me in app/views/drafts/compose.html.erb</p>
+<% content_for :assets do %>
+	<%= stylesheet_link_tag "wp" %>
+	<%= stylesheet_link_tag "colors-fresh" %>
+	<!--[if lte IE 7]>
+	<link rel='stylesheet' id='ie-css'  href='http://jsomers.net/blog/wp-admin/css/ie.css?ver=20090630' type='text/css' media='all' />
+	<![endif]-->
+	<script type='text/javascript'>
+	/* <![CDATA[ */
+	var quicktagsL10n = {};
+	/* ]]> */
+	</script>
+	<%= javascript_include_tag "wp" %>
+<% end %>
+
+<div id="wpwrap">
+<div id="wpcontent">
+<div id="wphead">
+
+<img id="header-logo" src="../wp-includes/images/blank.gif" alt="" width="32" height="32" /> <h1 id="site-heading" ><a href="http://jsomers.net/blog/" title="Visit Site"><span id="site-title">draft-o-tron</span> <em id="site-visit-button">Create, share, and review drafts</em></a></h1>
+
+<div id="wphead-info">
+<div id="user_info">
+<p>Howdy, <a href="profile.php" title="Edit your profile">James Somers</a><span class="turbo-nag hidden"> | <a href="tools.php">Turbo</a></span> |
+
+<a href="http://jsomers.net/blog/wp-login.php?action=logout&amp;_wpnonce=5a62c281ce" title="Log Out">Log Out</a></p>
+</div>
+
+<div id="favorite-actions"><div id="favorite-first"><a href="post-new.php">New Post</a></div><div id="favorite-toggle"><br /></div><div id="favorite-inside"><div class='favorite-action'><a href='edit.php?post_status=draft'>Drafts</a></div>
+<div class='favorite-action'><a href='page-new.php'>New Page</a></div>
+<div class='favorite-action'><a href='media-new.php'>Upload</a></div>
+<div class='favorite-action'><a href='edit-comments.php'>Comments</a></div>
+</div></div>
+</div>
+</div>
+
+<div id="wpbody">
+
+<ul id="adminmenu">
+
+
+	<li class="wp-first-item wp-has-submenu menu-top menu-top-first menu-top-last" id="menu-dashboard">
+	<div class='wp-menu-image'><a href='index.php'><br /></a></div><div class="wp-menu-toggle"><br /></div><a href='#' onclick="alert(tinyMCE.activeEditor.getContent())" class="wp-first-item wp-has-submenu menu-top menu-top-first menu-top-last" tabindex="1">Dashboard</a>
+	<div class='wp-submenu'><div class='wp-submenu-head'>Dashboard</div><ul><li class="wp-first-item"><a href='index.php' class="wp-first-item" tabindex="1">Dashboard</a></li><li><a href='index.php?page=akismet-stats-display' tabindex="1">Akismet Stats</a></li></ul></div></li>
+	<li class="wp-menu-separator"><a class="separator" href="?unfoldmenu=1"><br /></a></li>
+
+	<li class="wp-has-submenu wp-has-current-submenu wp-menu-open open-if-no-js menu-top menu-top-first" id="menu-posts">
+	<div class='wp-menu-image'><a href='edit.php'><br /></a></div><div class="wp-menu-toggle"><br /></div><a href='edit.php' class="wp-has-submenu wp-has-current-submenu wp-menu-open open-if-no-js menu-top menu-top-first" tabindex="1">Posts</a>
+	<div class='wp-submenu'><div class='wp-submenu-head'>Posts</div><ul><li class="wp-first-item current"><a href='edit.php' class="wp-first-item current" tabindex="1">Edit</a></li><li><a href='post-new.php' tabindex="1">Add New</a></li><li><a href='edit-tags.php?taxonomy=post_tag' tabindex="1">Post Tags</a></li><li><a href='categories.php' tabindex="1">Categories</a></li></ul></div></li>
+	<li class="wp-has-submenu menu-top" id="menu-media">
+	<div class='wp-menu-image'><a href='upload.php'><br /></a></div><div class="wp-menu-toggle"><br /></div><a href='upload.php' class="wp-has-submenu menu-top" tabindex="1">Media</a>
+
+	<div class='wp-submenu'><div class='wp-submenu-head'>Media</div><ul><li class="wp-first-item"><a href='upload.php' class="wp-first-item" tabindex="1">Library</a></li><li><a href='media-new.php' tabindex="1">Add New</a></li></ul></div></li>
+	<li class="wp-has-submenu menu-top" id="menu-links">
+	<div class='wp-menu-image'><a href='link-manager.php'><br /></a></div><div class="wp-menu-toggle"><br /></div><a href='link-manager.php' class="wp-has-submenu menu-top" tabindex="1">Links</a>
+	<div class='wp-submenu'><div class='wp-submenu-head'>Links</div><ul><li class="wp-first-item"><a href='link-manager.php' class="wp-first-item" tabindex="1">Edit</a></li><li><a href='link-add.php' tabindex="1">Add New</a></li><li><a href='edit-link-categories.php' tabindex="1">Link Categories</a></li></ul></div></li>
+	<li class="wp-has-submenu menu-top" id="menu-pages">
+
+	<div class='wp-menu-image'><a href='edit-pages.php'><br /></a></div><div class="wp-menu-toggle"><br /></div><a href='edit-pages.php' class="wp-has-submenu menu-top" tabindex="1">Pages</a>
+	<div class='wp-submenu'><div class='wp-submenu-head'>Pages</div><ul><li class="wp-first-item"><a href='edit-pages.php' class="wp-first-item" tabindex="1">Edit</a></li><li><a href='page-new.php' tabindex="1">Add New</a></li></ul></div></li>
+	<li class="menu-top menu-top-last" id="menu-comments">
+	<div class='wp-menu-image'><a href='edit-comments.php'><br /></a></div><div class="wp-menu-toggle"><br /></div><a href='edit-comments.php' class="menu-top menu-top-last" tabindex="1">Comments <span id='awaiting-mod' class='count-3'><span class='pending-count'>3</span></span></a></li>
+
+	<li class="wp-menu-separator-last"><a class="separator" href="?unfoldmenu=1"><br /></a></li></ul>
+
+<div id="wpbody-content">
+<div id="screen-meta">
+<div id="screen-options-wrap" class="hidden">
+
+	<form id="adv-settings" action="" method="post">
+	<h5>Show on screen</h5>
+	<div class="metabox-prefs">
+<label for="tagsdiv-post_tag-hide"><input class="hide-postbox-tog" name="tagsdiv-post_tag-hide" type="checkbox" id="tagsdiv-post_tag-hide" value="tagsdiv-post_tag" />Post Tags</label>
+<label for="categorydiv-hide"><input class="hide-postbox-tog" name="categorydiv-hide" type="checkbox" id="categorydiv-hide" value="categorydiv" />Categories</label>
+<label for="postexcerpt-hide"><input class="hide-postbox-tog" name="postexcerpt-hide" type="checkbox" id="postexcerpt-hide" value="postexcerpt" />Excerpt</label>
+<label for="trackbacksdiv-hide"><input class="hide-postbox-tog" name="trackbacksdiv-hide" type="checkbox" id="trackbacksdiv-hide" value="trackbacksdiv" />Send Trackbacks</label>
+<label for="postcustom-hide"><input class="hide-postbox-tog" name="postcustom-hide" type="checkbox" id="postcustom-hide" value="postcustom" />Custom Fields</label>
+
+<label for="commentstatusdiv-hide"><input class="hide-postbox-tog" name="commentstatusdiv-hide" type="checkbox" id="commentstatusdiv-hide" value="commentstatusdiv" />Discussion</label>
+<label for="commentsdiv-hide"><input class="hide-postbox-tog" name="commentsdiv-hide" type="checkbox" id="commentsdiv-hide" value="commentsdiv" checked="checked" />Comments</label>
+<label for="slugdiv-hide"><input class="hide-postbox-tog" name="slugdiv-hide" type="checkbox" id="slugdiv-hide" value="slugdiv" />Post Slug</label>
+<label for="revisionsdiv-hide"><input class="hide-postbox-tog" name="revisionsdiv-hide" type="checkbox" id="revisionsdiv-hide" value="revisionsdiv" checked="checked" />Post Revisions</label>
+	<br class="clear" />
+	</div>
+<h5>Screen Layout</h5>
+<div class='columns-prefs'>Number of Columns:
+<label><input type='radio' name='screen_columns' value='1' checked='checked' /> 1</label>
+
+<label><input type='radio' name='screen_columns' value='2' /> 2</label>
+</div>
+<div><input type="hidden" id="screenoptionnonce" name="screenoptionnonce" value="d2f747b77e" /></div>
+</form>
+</div>
+
+	<div id="contextual-help-wrap" class="hidden">
+	<h5>Get help with &#8220;Edit Post&#8221;</h5><div class="metabox-prefs">
+	<p>Most of the modules on this screen can be moved. If you hover your mouse over the title bar of a module you&rsquo;ll notice the 4 arrow cursor appears to let you know it is movable. Click on it, hold down the mouse button and start dragging the module to a new location. As you drag the module, notice the dotted gray box that also moves. This box indicates where the module will be placed when you release the mouse button.</p>
+
+	<p>The same modules can be expanded and collapsed by clicking once on their title bar and also completely hidden from the Screen Options tab.</p>
+<p><a href="http://codex.wordpress.org/Writing_Posts" target="_blank">Writing Posts</a></p></div>
+<h5>Other Help</h5><div class="metabox-prefs"><a href="http://codex.wordpress.org/" target="_blank">Documentation</a><br /><a href="http://wordpress.org/support/" target="_blank">Support Forums</a></div>
+	</div>
+
+</div>
+
+
+<div class="wrap">
+	<div id="icon-edit" class="icon32"><br /></div>
+<h2>Compose Draft</h2>
+<form name="post" action="post.php" method="post" id="post">
+<div id="poststuff" class="metabox-holder">
+
+<div id="post-body">
+<div id="post-body-content">
+<div id="titlediv">
+<div id="titlewrap">
+
+	<label class="screen-reader-text" for="title">Title</label>
+	<input type="text" name="post_title" size="30" tabindex="1" value="Some excellent talk on crime" id="title" autocomplete="off" />
+</div>
+<div class="inside">
+	<div id="edit-slug-box">
+<strong>Permalink:</strong>
+<span id="sample-permalink">http://jsomers.net/blog/<span id="editable-post-name" title="Click to edit this part of the permalink">some-excellent-quotes-on-crime</span></span>
+<span id="edit-slug-buttons"><a href="#post_name" class="edit-slug button hide-if-no-js" onclick="edit_permalink(212); return false;">Edit</a></span>
+<span id="editable-post-name-full">some-excellent-quotes-on-crime</span>
+
+<span id='view-post-btn'><a href='http://jsomers.net/blog/some-excellent-quotes-on-crime' class='button' target='_blank'>View Post</a></span>
+	</div>
+</div>
+</div>
+
+<div id="postdivrich" class="postarea">
+	<div id="editor-toolbar">
+		<div class="zerosize"><input accesskey="e" type="button" onclick="switchEditors.go('content')" /></div>
+			<a id="edButtonHTML" class="hide-if-no-js" onclick="switchEditors.go('content', 'html');">HTML</a>
+			<a id="edButtonPreview" class="active hide-if-no-js" onclick="switchEditors.go('content', 'tinymce');">Visual</a>
+	</div>
+	<div id="quicktags"><script type="text/javascript">edToolbar()</script></div>
+
+<div id='editorcontainer'><textarea rows='10' class='theEditor' cols='40' name='content' tabindex='2' id='content'>&lt;p&gt;I transcribed the following from the &lt;a href="http://bloggingheads.tv/diavlogs/22670"&gt;bloggingheads.tv dialog&lt;/a&gt; between &lt;a href="http://en.wikipedia.org/wiki/Mark_kleiman"&gt;Mark Kleiman&lt;/a&gt; and &lt;a href="http://en.wikipedia.org/wiki/Reihan_Salam"&gt;Reihan Salam&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;SALAM: I wanted to ask you: we've had this sharp decrease in the crime rate over the past couple of decades, and there are a lot of people who believe that this is a function of the "tough on crime" policies, three-strike rules, and also more incarceration. And yet you take exception to this view.&lt;/p&gt;
+&lt;p&gt;KLEIMAN: Well the three-strike rules are, from a crime-control view, certainly a mistake. "Three strikes" means turning your prisons into retirement homes for former burglars. Right now the average age of our prisoners is about fifteen years older than the average age of the offender, which means we're not targeting those prison cells very well on people who would otherwise be committing crimes if they were out. The other thing is that three strikes, because it's a cumulative idea over a lifetime, doesn't do much to measure the &lt;em&gt;rate&lt;/em&gt; at which somebody commits offenses. Someone who has two felony convictions by the time he's twenty, he's a much more dangerous character than someone who has three by the time he's forty. So there's no way three-strikes contributed anything... the contribution to crime-control was negative.&lt;/p&gt;
+</textarea></div>
+	<script type="text/javascript">
+	edCanvas = document.getElementById('content');
+	</script>
+
+<table id="post-status-info" cellspacing="0"><tbody><tr>
+	<td id="wp-word-count">Word count: <span id="word-count">594</span></td>
+	<td class="autosave-info">
+	<span id="autosave">&nbsp;</span>
+<span id="last-edit">Last edited by James Somers on October 21, 2009 at 3:45 am</span>	</td>
+
+</tr></tbody></table>
+</div>
+</div>
+<br class="clear" />
+
+</div><!-- /poststuff -->
+</form>
+</div>
+
+
+<div class="clear"></div></div><!-- wpbody-content -->
+<div class="clear"></div></div><!-- wpbody -->
+<div class="clear"></div></div><!-- wpcontent -->
+</div><!-- wpwrap -->
+
+<div id="footer">
+<p id="footer-left" class="alignleft"><span id="footer-thankyou">Thank you for creating with <a href="http://wordpress.org/">WordPress</a>.</span> | <a href="http://codex.wordpress.org/">Documentation</a> | <a href="http://wordpress.org/support/forum/4">Feedback</a></p>
+
+<p id="footer-upgrade" class="alignright">Version 2.8.5</p>
+<div class="clear"></div>
+</div>
+
+
+<script type="text/javascript">
+/* <![CDATA[ */
+tinyMCEPreInit = {
+	base : "http://0.0.0.0:3000/tinymce/",
+	suffix : "",
+	query : "ver=3241-1141",
+	mceInit : {mode:"specific_textareas", editor_selector:"theEditor", width:"100%", theme:"advanced", skin:"wp_theme", theme_advanced_buttons1:"bold,italic,strikethrough,|,bullist,numlist,blockquote,|,justifyleft,justifycenter,justifyright,|,sub, sup,hr,|,fullscreen", theme_advanced_buttons2:"formatselect,underline,justifyfull,forecolor,|,pastetext,pasteword,removeformat,|,media,charmap,|,outdent,indent,|,undo,redo,wp_help", theme_advanced_buttons3:"", theme_advanced_buttons4:"", language:"en", spellchecker_languages:"+English=en,Danish=da,Dutch=nl,Finnish=fi,French=fr,German=de,Italian=it,Polish=pl,Portuguese=pt,Spanish=es,Swedish=sv", theme_advanced_toolbar_location:"top", theme_advanced_toolbar_align:"left", theme_advanced_statusbar_location:"bottom", theme_advanced_resizing:"1", theme_advanced_resize_horizontal:"", dialog_type:"modal", relative_urls:"", remove_script_host:"", convert_urls:"", apply_source_formatting:"", remove_linebreaks:"1", gecko_spellcheck:"1", entities:"38,amp,60,lt,62,gt", accessibility_focus:"1", tabfocus_elements:"major-publishing-actions", media_strict:"", save_callback:"switchEditors.saveCallback", wpeditimage_disable_captions:"", plugins:"safari,inlinepopups,spellchecker,paste,wordpress,media,fullscreen,wpeditimage,wpgallery,tabfocus"},
+	load_ext : function(url,lang){var sl=tinymce.ScriptLoader;sl.markDone(url+'/langs/'+lang+'.js');sl.markDone(url+'/langs/'+lang+'_dlg.js');}
+};
+/* ]]> */
+</script>
+
+<%= javascript_include_tag "wp-tinymce" %>
+<%= javascript_include_tag "wp-tinymce-langs" %>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+tinyMCEPreInit.go();
+tinyMCE.init(tinyMCEPreInit.mceInit);
+/* ]]> */
+</script>
+
+<script type="text/javascript">if(typeof wpOnload=='function')wpOnload();</script>
