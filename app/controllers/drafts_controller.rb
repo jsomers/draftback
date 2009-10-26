@@ -1,6 +1,7 @@
 class DraftsController < ApplicationController
   require 'digest'
   require 'htmlentities'
+  require 'stanfordparser'
   
   def compose
     @drft = Draft.find_by_url(params[:id])
@@ -32,5 +33,19 @@ class DraftsController < ApplicationController
   end
   
   def review
+    @drft = Draft.find_by_public_url(params[:id])
+    raw = HTMLEntities.new.decode(@drft.content)
+    preproc = StanfordParser::DocumentPreprocessor.new
+    sentences = preproc.getSentencesFromString(raw)
+    sentences.each_with_index do |sent, i|
+      chars = ["?", ",", ".", ":", ";", "...", "''", "'"]
+      sent = sentences[i] = sent.join(" ")
+      sent = sentences[i] = sent.gsub(/(``[^'']+$)/) {|s| "#{$1}\""}
+      sent = sentences[i] = sent.gsub("`` ", ' "').gsub("--", "&mdash;")
+      chars.each {|chr| sent = sentences[i] = sent.gsub(" " + chr, chr)}
+      sentences[i] = '<a class="sentence" href="#" id="sent-' + i.to_s + '">' + sent.strip + '</span>'
+    end
+    @content = sentences.join(" ")
+    @n_zeros = '0' * sentences.length
   end
 end

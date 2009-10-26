@@ -1,2 +1,94 @@
-<h1>Drafts#review</h1>
-<p>Find me in app/views/drafts/review.html.erb</p>
+<style type="text/css">
+#draft {
+	font-family: Georgia;
+	font-size: 14px;
+	width: 650px;
+}
+#draft p {
+	font-size: 14px;
+}
+
+a.sentence {
+	color: #333;
+	text-decoration: none;
+}
+
+a.sentence:hover {
+	background-color: #ddd;
+}
+
+a.sentence.up {
+	background-color: #99ffbb;
+}
+
+a.sentence.down { 
+	background-color: #ffbbaa;
+}
+
+.note {
+	padding: 10px;
+	font-family: Courier;
+	
+}
+</style>
+
+<script type="text/javascript">
+var times = '<%= @n_zeros %>'.split('');
+$(document).ready(function() {
+	var pop_note = function(id, action, ev) {
+		var $note = $("#note-" + id);
+		if ($note.length == 0) { 
+			$note = $("#note").clone();
+			$note.appendTo("#draft");
+			$note.attr("id", "note-" + id);
+		};
+		console.log($note[0]);
+		if (action == 'up') {
+			$note.attr("affect", "good");
+			$note.css("left", (ev.pageX + 20) + "px");
+			$note.css("top", (ev.pageY + 20) + "px");
+			$note.focus();
+			$note.show();
+		} else if (action == 'down') {
+			$note.attr("affect", "bad");
+			$note.css("left", (ev.pageX + 20) + "px");
+			$note.css("top", (ev.pageY + 20) + "px");
+			$note.focus();
+			$note.show();
+		} else {
+			$note.attr("affect", "neutral");
+			$note.hide();
+		};
+		$note.focus();
+		return false;
+	}
+	
+	$(".sentence").click(function(ev) {
+		$(".note").each(function(e) {
+			$(this).hide();
+		});
+		var i = $(this).attr("id").split("-")[1] * 1
+		if (times[i] == '0') {
+			$(this).addClass("up");
+			pop_note(i, "up", ev);
+			times[i] = '1';
+		} else if (times[i] == '1') {
+			$(this).removeClass("up");
+			$(this).addClass("down");
+			pop_note(i, "down", ev);
+			times[i] = '2';
+		} else {
+			$(this).removeClass("up");
+			$(this).removeClass("down");
+			pop_note(i, "neutral", ev);
+			times[i] = '0';
+		};
+		return false;
+	});
+});
+</script>
+<textarea id="note" class="note" affect="neutral" style="width: 400px; position: absolute;"></textarea>
+<div id="draft">
+	<h1><%= @drft.title %></h1>
+	<%= @content %>
+</div>
