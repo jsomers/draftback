@@ -3,6 +3,44 @@
 	font-family: Georgia;
 	font-size: 14px;
 	width: 650px;
+	margin-left: 120px;
+	padding-right: 30px;
+	padding-left: 30px;
+	border-left: 4px solid #777;
+	border-right: 4px solid #777;
+	border-top: 1px solid #777;
+	border-bottom: 1px solid #777;
+	background-color: white;
+	float: left;
+}
+li {
+	margin-bottom: 0px;
+}
+.instructions {
+	width: 650px;
+	margin-left: 120px;
+	padding-right: 30px;
+	padding-left: 30px;
+	border-left: 4px solid #777;
+	border-right: 4px solid #777;
+	font-family: Verdana;
+	font-size: 11px;
+	line-height: 1.3em;
+	padding-top: 8px;
+	padding-bottom: 10px;
+	background-color: #ccc;
+	float: left;
+}
+#wpcontent {
+	background-color: #222;
+	padding-bottom: 0px;
+}
+#wpbody {
+	margin-top: 0px;
+	padding-top: 0px;
+}
+#footer {
+	margin-top: 0px;
 }
 #draft p {
 	font-size: 14px;
@@ -34,7 +72,21 @@ a.sentence.down {
 
 <script type="text/javascript">
 var times = '<%= @n_zeros %>'.split('');
+
+var hide_notes = function(affect) {
+	$(".note:visible[affect=" + affect + "]").each(function(e) {
+		if ($(this).val() == "") {
+			$(this).hide();
+		};
+	});
+};
+
 $(document).ready(function() {
+	$(".note").live("keydown", function(e) {
+		if (e.keyCode == 13) {
+			$(this).hide();
+		};
+	});
 	var pop_note = function(id, action, ev) {
 		var $note = $("#note-" + id);
 		if ($note.length == 0) { 
@@ -42,17 +94,17 @@ $(document).ready(function() {
 			$note.appendTo("#draft");
 			$note.attr("id", "note-" + id);
 		};
-		console.log($note[0]);
+		$note.val($note.val().replace("\n", ""));
 		if (action == 'up') {
 			$note.attr("affect", "good");
-			$note.css("left", (ev.pageX + 20) + "px");
-			$note.css("top", (ev.pageY + 20) + "px");
+			$note.css("left", "40px");
+			$note.css("top", (ev.pageY - 10) + "px");
 			$note.focus();
 			$note.show();
 		} else if (action == 'down') {
 			$note.attr("affect", "bad");
-			$note.css("left", (ev.pageX + 20) + "px");
-			$note.css("top", (ev.pageY + 20) + "px");
+			$note.css("left", "40px");
+			$note.css("top", (ev.pageY - 10) + "px");
 			$note.focus();
 			$note.show();
 		} else {
@@ -60,6 +112,7 @@ $(document).ready(function() {
 			$note.hide();
 		};
 		$note.focus();
+		setTimeout("hide_notes('" + $note.attr("affect") + "')", 2000);
 		return false;
 	}
 	
@@ -87,8 +140,19 @@ $(document).ready(function() {
 	});
 });
 </script>
-<textarea id="note" class="note" affect="neutral" style="width: 400px; position: absolute;"></textarea>
+<textarea id="note" class="note" affect="neutral" style="width: 250px; position: absolute; display: none;"></textarea>
+<div class="instructions">
+	<h3 style="margin: 2px 0px 5px 0px;">Instructions:</h3>
+	<ol style="font-size: 11px;">
+		<li>Click a sentence <strong>once</strong> if you like it and <strong>twice</strong> if you don't.</li>
+		<li>A window for <strong>quick notes</strong> will pop up in either case. <strong>Notes disappear</strong> if you don't type anything.</li>
+		<li>If you do leave comments, <strong>hit enter</strong> to close the note window. <strong>Everything will be saved automatically</strong>.</li>
+</div>
 <div id="draft">
-	<h1><%= @drft.title %></h1>
+	<h1 style="font-family: Arial; font-size: 22px; margin-top: 20px;"><%= @drft.title %></h1>
 	<%= @content %>
+</div>
+</a>
+<div class="instructions">
+	<h3 style="margin: 2px 0px 5px 0px;">All done? Sign your name: <input type="text" style="font-family: Courier; width: 180px; height: 25px; vertical-align: middle; padding-top: 4px; font-size: 15px; text-align: center;"/> and <a href="#">click here to send your feedback.</a></h3>
 </div>
