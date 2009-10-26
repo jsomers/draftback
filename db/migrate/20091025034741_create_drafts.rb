@@ -1,7 +1,6 @@
 class CreateDrafts < ActiveRecord::Migration
   def self.up
     create_table :drafts do |t|
-
       t.timestamps
     end
   end

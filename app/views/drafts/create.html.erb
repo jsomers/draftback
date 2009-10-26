@@ -1,0 +1,11 @@
+<div style="margin: 0 auto;">
+	<div style="text-align: center; font-size: 32px; color: #444; margin-top: 80px; margin-right: 200px;">
+		http://draftblast.com/<strong><%= @the_url %></strong>
+		<div style="font-size: 20px; color: #777; font-family: Georgia; margin-top: 20px;">
+			There are no drafts here. Would you like to create one? <br/>
+			<% form_tag(:controller => "drafts", :action => "new", :draft_url => @the_url) do -%>
+				<div><%= submit_tag 'Create draft', {:style => "font-size: 28px; margin-top: 20px;"} %></div>
+			<% end -%>
+		</div>
+	</div>
+</div>
