@@ -47,16 +47,21 @@ li {
 	font-size: 14px;
 }
 
-a.name {
-	color: #D54E21;
-	text-decoration: none;
-	border-bottom: 1px solid #d54e21;
+li.name {
+	position: relative;
+	left: -20px;
+	cursor: pointer;
+	padding-left: 40px;
+	width: 259px;
 }
 
-a.name:hover {
-	color: #21759B;
-	border-bottom: 1px solid #21759b;
+li.name:hover {
+	background-color: white;
+	color: black;
+	border-top: 4px solid #777;
+	border-bottom: 4px solid #777;
 }
+
 a.sentence {
 	color: #333;
 	text-decoration: none;
@@ -82,6 +87,7 @@ a.sentence.down {
 	border: 1px solid #86acc1;
 	background-color: #fff;
 	opacity: 0.85;
+	max-width: 450px;
 }
 #tooltip .contain {
 	background: #cde9f8;
@@ -150,11 +156,11 @@ a.sentence.down {
 </script>
 
 <div id="tooltip" style="display: none; right: auto;"><div class="contain"><h3><span id="show-note"></span></h3></div></div>
-<div style="position: absolute; top: 65px; left: 20px; width: 250px; color: #aaa;">
+<div style="position: absolute; top: 65px; left: 0px; padding-left: 20px; width: 250px; color: #aaa;">
 	Click any of the links below to see that person's feedback:
-	<ul style="margin-left: 20px; margin-top: 10px;">
+	<ul style="margin-top: 10px;">
 	<% @reviews.collect {|r| [r.signature, r.updated_at]}.each_with_index do |rev, i| %>
-		<li><a class="name" href="#" style="font-size: 21px; line-height: 1.4em;" review_id="<%= i %>"><%= rev[0] %></a> <div style="margin-top: 2px; font-size: 11px; color: #aaa"><%= rev[1].strftime('%a %b %d %I:%M:%S%p') %></div></li>
+		<li class="name" review_id="<%= i %>"><span style="font-size: 21px; line-height: 1.4em;"><%= rev[0] %></span> <div style="margin-top: 2px; font-size: 11px; color: #aaa">&raquo; <%= rev[1].strftime('%a %b %d, %I:%M:%S%p').downcase %></div></li>
 	<% end %>
 	</ul>
 </div>
@@ -171,7 +177,7 @@ a.sentence.down {
 </div>
 
 <% @reviews.each_with_index do |rev, i| %>
-	<div id="review-<%= i %>" signature="<%= rev.signature %>" timestamp="<%= rev.updated_at.strftime('%a %b %d %I:%M:%S%p') %>" style="display: none;">
+	<div id="review-<%= i %>" signature="<%= rev.signature %>" timestamp="<%= rev.updated_at.strftime('%a %b %d %I:%M:%S%p').downcase %>" style="display: none;">
 		<span id="content"><%= HTMLEntities.new.decode(rev.content) %></span>
 		<span id="general-comments"><%= rev.general_comments %></span>
 	</div>
