@@ -45,6 +45,7 @@ class DraftsController < ApplicationController
       @content = HTMLEntities.new.decode(Review.find(session[:review_id]).content)
       @n_zeros = Review.find(session[:review_id]).n_sentences
       @general_comments = Review.find(session[:review_id]).general_comments
+      @signature = Review.find(session[:review_id]).signature
       if @content.nil?
         reviewified = @drft.reviewify
         @content = reviewified[:content]
@@ -61,5 +62,10 @@ class DraftsController < ApplicationController
     rev.updated_at = Time.new
     rev.save
     render :json => Time.new
+  end
+  
+  def feedback
+    @drft = Draft.find_by_url(params[:id])
+    @reviews = @drft.reviews
   end
 end

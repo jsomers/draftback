@@ -96,7 +96,9 @@ var hide_notes = function(affect) {
 		if ($(this).val() == "") {
 			$(this).hide();
 			$("#sent-" + $(this).attr("id").split("-")[1]).css("text-decoration", "none");
-		};
+		} else {
+			$(this).html($(this).val());
+		}
 	});
 };
 
@@ -106,6 +108,7 @@ $(document).ready(function() {
 			$(this).hide();
 			if ($(this).val() != "") {
 				$("#sent-" + $(this).attr("id").split("-")[1]).css("text-decoration", "underline");
+				$(this).html($(this).val());
 			} else {
 				$("#sent-" + $(this).attr("id").split("-")[1]).css("text-decoration", "none");
 			}
@@ -118,7 +121,7 @@ $(document).ready(function() {
 		var $note = $("#note-" + id);
 		if ($note.length == 0) { 
 			$note = $("#note").clone();
-			$note.appendTo("#draft");
+			$note.appendTo("#draft_content");
 			$note.attr("id", "note-" + id);
 		};
 		$note.val($note.val().replace("\n", ""));
@@ -195,5 +198,5 @@ $(document).ready(function() {
 <div class="instructions">
 	<h3 style="margin: 2px 0px 5px 0px;">General Comments:</h3><textarea id="general_comments" style="width: 100%; height: 90px; padding: 10px; font-family: Courier"><%= @general_comments %></textarea>
 	<hr>
-	<div style="float: left; font-size: 12px; padding-top: 5px;"><h3 style="margin: 2px 0px 5px 0px;">All done? Sign your name: <input type="text" style="font-family: Verdana; width: 180px; height: 25px; vertical-align: middle; padding-top: 2px; font-size: 13px; text-align: center; font-weight: bold; color: #555" id="signature" value=""/> and</h3></div> <div style="float: right"><a href="#" id="submit-review"><img src="/images/button.png" oversrc="/images/button-hover.png"/></a></div>
+	<div style="float: left; font-size: 12px; padding-top: 5px;"><h3 style="margin: 2px 0px 5px 0px;">All done? Sign your name: <input type="text" style="font-family: Verdana; width: 180px; height: 25px; vertical-align: middle; padding-top: 2px; font-size: 13px; text-align: center; font-weight: bold; color: #555" id="signature" value="<%= @signature %>"/> and</h3></div> <div style="float: right"><a href="#" id="submit-review"><img src="/images/button.png" oversrc="/images/button-hover.png"/></a></div>
 </div>

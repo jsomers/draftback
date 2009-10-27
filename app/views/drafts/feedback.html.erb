@@ -1,0 +1,180 @@
+<style type="text/css">
+#draft {
+	font-family: Georgia;
+	font-size: 14px;
+	width: 650px;
+	margin-left: 120px;
+	padding-right: 30px;
+	padding-left: 30px;
+	border-left: 4px solid #777;
+	border-right: 4px solid #777;
+	border-top: 1px solid #777;
+	border-bottom: 1px solid #777;
+	background-color: white;
+	min-height: 600px;
+	float: left;
+}
+li {
+	margin-bottom: 10px;
+}
+.instructions {
+	width: 650px;
+	margin-left: 120px;
+	padding-right: 30px;
+	padding-left: 30px;
+	border-left: 4px solid #777;
+	border-right: 4px solid #777;
+	font-family: Verdana;
+	font-size: 11px;
+	line-height: 1.3em;
+	padding-top: 8px;
+	padding-bottom: 10px;
+	background-color: #ccc;
+	float: left;
+}
+#wpcontent {
+	background-color: #222;
+	padding-bottom: 0px;
+}
+#wpbody {
+	margin-top: 0px;
+	padding-top: 0px;
+}
+#footer {
+	margin-top: 0px;
+}
+#draft p {
+	font-size: 14px;
+}
+
+a.name {
+	color: #D54E21;
+	text-decoration: none;
+	border-bottom: 1px solid #d54e21;
+}
+
+a.name:hover {
+	color: #21759B;
+	border-bottom: 1px solid #21759b;
+}
+a.sentence {
+	color: #333;
+	text-decoration: none;
+}
+
+a.sentence.up {
+	background-color: #99ffbb;
+}
+
+a.sentence.down { 
+	background-color: #ffbbaa;
+}
+
+.note {
+	padding: 10px;
+	font-family: Courier;
+	width: 400px;
+}
+
+#tooltip {
+	position: absolute;
+	z-index: 3000;
+	border: 1px solid #86acc1;
+	background-color: #fff;
+	opacity: 0.85;
+}
+#tooltip .contain {
+	background: #cde9f8;
+	border: 2px solid #fff;
+	color: black;
+	padding: 5px;
+}
+#tooltip h3, #tooltip div { 
+	margin: 0;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+</style>
+
+<script type="text/javascript">
+	var select_review = function(id) {
+		$("#draft_content").html($("#review-" + id).find("#content").html());
+		$("#draft_content").find(".note").each(function() { 
+			$(this).hide();
+		});
+		$("#comments-header").show();
+		if ($("#review-" + id).find("#general-comments").html() != "") {
+			$("#the-general-comments").html($("#review-" + id).find("#general-comments").html())
+		} else {
+			$("#the-general-comments").html("");
+			$("#comments-header").hide();
+		}
+		$("#version").html("reviewed by <span style='color: #d54e21;'>" + $("#review-" + id).attr("signature") + "</span>")
+	};
+	$(document).ready(function() {
+		//select_review(0);
+		$(".name").click(function(ev) { 
+			select_review($(this).attr("review_id"));
+		});
+		
+		$("a.sentence").live("mouseover",
+			function(ev) {
+				var id = $(this).attr("id").split("-")[1];
+				if (($("#draft_content").find("#note-" + id).html() != "") && ($("#draft_content").find("#note-" + id).html() != null)) {
+					$("#show-note").html($("#note-" + id).html())
+					$("#tooltip").css("top", ev.pageY - 30 + "px");
+					$("#tooltip").css("left", ev.pageX + 20 + "px");
+					//$("#note-" + id).css("height", $("#note-" + id)[0].scrollHeight);
+					$("#tooltip").show();
+				} else {
+					$("#tooltip").hide();
+				}
+			}
+		);
+		
+		$("a.sentence").live("mouseout",
+			function(ev) {
+				var id = $(this).attr("id").split("-")[1];
+				$("#tooltip").hide();
+			}
+		);
+		
+		$("a.sentence").live("mousemove",
+			function(ev) {
+				$("#tooltip").css("top", ev.pageY - 30 + "px");
+				$("#tooltip").css("left", ev.pageX + 20 + "px");
+			}
+		);
+	});
+</script>
+
+<div id="tooltip" style="display: none; right: auto;"><div class="contain"><h3><span id="show-note"></span></h3></div></div>
+<div style="position: absolute; top: 65px; left: 20px; width: 250px; color: #aaa;">
+	Click any of the links below to see that person's feedback:
+	<ul style="margin-left: 20px; margin-top: 10px;">
+	<% @reviews.collect {|r| [r.signature, r.updated_at]}.each_with_index do |rev, i| %>
+		<li><a class="name" href="#" style="font-size: 21px; line-height: 1.4em;" review_id="<%= i %>"><%= rev[0] %></a> <div style="margin-top: 2px; font-size: 11px; color: #aaa"><%= rev[1].strftime('%a %b %d %I:%M:%S%p') %></div></li>
+	<% end %>
+	</ul>
+</div>
+<textarea id="note" class="note" affect="neutral" style="width: 250px; position: absolute; display: none;"></textarea>
+<div class="instructions">
+	<h2 style="margin: 2px 0px 5px 0px; display: none;" id="comments-header">General Comments</h3>
+	<span id="the-general-comments"></span>
+</div>
+<div id="draft">
+	<h1 style="font-family: Arial; font-size: 22px; margin-top: 20px;"><%= @drft.title %> (<span id="version">original</span>)</h1>
+	<div id="draft_content">
+		<%= HTMLEntities.new.decode(@drft.content) %>
+	</div>
+</div>
+
+<% @reviews.each_with_index do |rev, i| %>
+	<div id="review-<%= i %>" signature="<%= rev.signature %>" timestamp="<%= rev.updated_at.strftime('%a %b %d %I:%M:%S%p') %>" style="display: none;">
+		<span id="content"><%= HTMLEntities.new.decode(rev.content) %></span>
+		<span id="general-comments"><%= rev.general_comments %></span>
+	</div>
+<% end %>
+</a>
+</div>
