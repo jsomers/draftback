@@ -34,18 +34,32 @@ class DraftsController < ApplicationController
   
   def review
     @drft = Draft.find_by_public_url(params[:id])
-    raw = HTMLEntities.new.decode(@drft.content)
-    preproc = StanfordParser::DocumentPreprocessor.new
-    sentences = preproc.getSentencesFromString(raw)
-    sentences.each_with_index do |sent, i|
-      chars = ["?", ",", ".", ":", ";", "...", "''", "'"]
-      sent = sentences[i] = sent.join(" ")
-      sent = sentences[i] = sent.gsub(/(``[^'']+$)/) {|s| "#{$1}\""}
-      sent = sentences[i] = sent.gsub("`` ", ' "').gsub("--", "&mdash;")
-      chars.each {|chr| sent = sentences[i] = sent.gsub(" " + chr, chr)}
-      sentences[i] = '<a class="sentence" href="#" id="sent-' + i.to_s + '">' + sent.strip + '</span>'
+    if session[:review_id].nil?
+      reviewified = @drft.reviewify
+      rev = Review.new(:draft_id => @drft.id, :n_sentences => reviewified[:n_sentences])
+      rev.save
+      session[:review_id] = rev.id
+      @content = reviewified[:content]
+      @n_zeros = reviewified[:n_sentences]
+    else
+      @content = HTMLEntities.new.decode(Review.find(session[:review_id]).content)
+      @n_zeros = Review.find(session[:review_id]).n_sentences
+      @general_comments = Review.find(session[:review_id]).general_comments
+      if @content.nil?
+        reviewified = @drft.reviewify
+        @content = reviewified[:content]
+        @n_zeros = reviewified[:n_sentences]
+      end
     end
-    @content = sentences.join(" ")
-    @n_zeros = '0' * sentences.length
+  end
+  
+  def save_review
+    rev = Review.find(session[:review_id])
+    rev.content = HTMLEntities.new.encode(params[:content])
+    rev.signature = params[:signature] unless params[:signature].empty?
+    rev.general_comments = params[:general_comments] unless params[:general_comments].empty?
+    rev.updated_at = Time.new
+    rev.save
+    render :json => Time.new
   end
 end

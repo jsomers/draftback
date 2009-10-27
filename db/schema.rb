@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091025225533) do
+ActiveRecord::Schema.define(:version => 20091027064650) do
 
   create_table "drafts", :force => true do |t|
     t.datetime "created_at"
@@ -18,11 +18,17 @@ ActiveRecord::Schema.define(:version => 20091025225533) do
     t.text     "title",      :default => ""
     t.text     "content",    :default => ""
     t.string   "public_url"
+    t.string   "email"
   end
 
   create_table "reviews", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "draft_id"
+    t.text     "content"
+    t.string   "signature"
+    t.string   "n_sentences"
+    t.text     "general_comments"
   end
 
 end

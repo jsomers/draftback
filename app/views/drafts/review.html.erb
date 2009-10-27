@@ -11,6 +11,7 @@
 	border-top: 1px solid #777;
 	border-bottom: 1px solid #777;
 	background-color: white;
+	min-height: 400px;
 	float: left;
 }
 li {
@@ -66,17 +67,35 @@ a.sentence.down {
 .note {
 	padding: 10px;
 	font-family: Courier;
-	
+	height: 90px;
 }
 </style>
 
 <script type="text/javascript">
 var times = '<%= @n_zeros %>'.split('');
+var t = null;
+
+var save_review = function(continuous) {
+	var content = $("#draft_content").html();
+	$.post("/drafts/save_review", {authenticity_token: AUTH_TOKEN, content: content, signature: $("#signature").attr("value"), general_comments: $("#general_comments").val()},
+		function(ret) {
+			var ret = JSON.parse(ret);
+			var now = new Date();
+			document.title = "(saved at " + now.format("h:MM:sstt") + " on " + now.format("dddd dS, yyyy") + ")";
+		}
+	)
+	if (continuous) {
+		setTimeout("save_review(true)", 1000 * 30) // Save every thirty seconds.
+	} else {
+		return false;
+	}
+};
 
 var hide_notes = function(affect) {
 	$(".note:visible[affect=" + affect + "]").each(function(e) {
 		if ($(this).val() == "") {
 			$(this).hide();
+			$("#sent-" + $(this).attr("id").split("-")[1]).css("text-decoration", "none");
 		};
 	});
 };
@@ -85,8 +104,16 @@ $(document).ready(function() {
 	$(".note").live("keydown", function(e) {
 		if (e.keyCode == 13) {
 			$(this).hide();
+			if ($(this).val() != "") {
+				$("#sent-" + $(this).attr("id").split("-")[1]).css("text-decoration", "underline");
+			} else {
+				$("#sent-" + $(this).attr("id").split("-")[1]).css("text-decoration", "none");
+			}
 		};
 	});
+	
+	setTimeout("save_review(true)", 3000);
+
 	var pop_note = function(id, action, ev) {
 		var $note = $("#note-" + id);
 		if ($note.length == 0) { 
@@ -110,13 +137,17 @@ $(document).ready(function() {
 		} else {
 			$note.attr("affect", "neutral");
 			$note.hide();
+			if ($note.val() == "") {
+				$("#sent-" + $note.attr("id").split("-")[1]).css("text-decoration", "none");
+			};
 		};
 		$note.focus();
-		setTimeout("hide_notes('" + $note.attr("affect") + "')", 2000);
+		t = setTimeout("hide_notes('" + $note.attr("affect") + "')", 2000);
 		return false;
 	}
 	
 	$(".sentence").click(function(ev) {
+		clearTimeout(t);
 		$(".note").each(function(e) {
 			$(this).hide();
 		});
@@ -147,12 +178,22 @@ $(document).ready(function() {
 		<li>Click a sentence <strong>once</strong> if you like it and <strong>twice</strong> if you don't.</li>
 		<li>A window for <strong>quick notes</strong> will pop up in either case. <strong>Notes disappear</strong> if you don't type anything.</li>
 		<li>If you do leave comments, <strong>hit enter</strong> to close the note window. <strong>Everything will be saved automatically</strong>.</li>
+	</ol>
 </div>
 <div id="draft">
 	<h1 style="font-family: Arial; font-size: 22px; margin-top: 20px;"><%= @drft.title %></h1>
-	<%= @content %>
+	<div id="draft_content">
+	<% if @content.nil? %>
+		Whoops, it looks like something's gone horribly wrong and we've lost your work.
+	<% else %>
+		<%= @content %>
+	<% end %>
+	</div>
 </div>
 </a>
+<script language="javascript" src="/javascripts/simpleswap.js"></script>
 <div class="instructions">
-	<h3 style="margin: 2px 0px 5px 0px;">All done? Sign your name: <input type="text" style="font-family: Verdana; width: 180px; height: 25px; vertical-align: middle; padding-top: 2px; font-size: 13px; text-align: center; font-weight: bold; color: #555"/> and <a href="#">click here to send your feedback.</a></h3>
+	<h3 style="margin: 2px 0px 5px 0px;">General Comments:</h3><textarea id="general_comments" style="width: 100%; height: 90px; padding: 10px; font-family: Courier"><%= @general_comments %></textarea>
+	<hr>
+	<div style="float: left; font-size: 12px; padding-top: 5px;"><h3 style="margin: 2px 0px 5px 0px;">All done? Sign your name: <input type="text" style="font-family: Verdana; width: 180px; height: 25px; vertical-align: middle; padding-top: 2px; font-size: 13px; text-align: center; font-weight: bold; color: #555" id="signature" value=""/> and</h3></div> <div style="float: right"><a href="#" id="submit-review"><img src="/images/button.png" oversrc="/images/button-hover.png"/></a></div>
 </div>
