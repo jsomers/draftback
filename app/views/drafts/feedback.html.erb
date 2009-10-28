@@ -53,13 +53,17 @@ li.name {
 	cursor: pointer;
 	padding-left: 40px;
 	width: 259px;
+	float: left;
+	padding-bottom: 5px;
 }
 
 li.name:hover {
-	background-color: white;
-	color: black;
-	border-top: 4px solid #777;
-	border-bottom: 4px solid #777;
+	color: #D54E21;
+}
+
+li.name.selected {
+	background: white;
+	color: #D54E21;
 }
 
 a.sentence {
@@ -109,6 +113,8 @@ a.sentence.down {
 		$("#draft_content").find(".note").each(function() { 
 			$(this).hide();
 		});
+		$("li.name").removeClass("selected");
+		$("li.name[review_id=" + id + "]").addClass("selected");
 		$("#comments-header").show();
 		if ($("#review-" + id).find("#general-comments").html() != "") {
 			$("#the-general-comments").html($("#review-" + id).find("#general-comments").html())
@@ -116,7 +122,7 @@ a.sentence.down {
 			$("#the-general-comments").html("");
 			$("#comments-header").hide();
 		}
-		$("#version").html("reviewed by <span style='color: #d54e21;'>" + $("#review-" + id).attr("signature") + "</span>")
+		//$("#version").html("reviewed by <span style='color: #d54e21;'>" + $("#review-" + id).attr("signature") + "</span>")
 	};
 	$(document).ready(function() {
 		//select_review(0);
@@ -157,23 +163,23 @@ a.sentence.down {
 
 <div id="tooltip" style="display: none; right: auto;"><div class="contain"><h3><span id="show-note"></span></h3></div></div>
 <div style="position: absolute; top: 65px; left: 0px; padding-left: 20px; width: 250px; color: #aaa;">
-	Click any of the links below to see that person's feedback:
+	<h2 style="font-weight: normal; color: white">View feedback from:</h2>
 	<ul style="margin-top: 10px;">
 	<% @reviews.collect {|r| [r.signature, r.updated_at]}.each_with_index do |rev, i| %>
-		<li class="name" review_id="<%= i %>"><span style="font-size: 21px; line-height: 1.4em;"><%= rev[0] %></span> <div style="margin-top: 2px; font-size: 11px; color: #aaa">&raquo; <%= rev[1].strftime('%a %b %d, %I:%M:%S%p').downcase %></div></li>
+		<li class="name" review_id="<%= i %>"><span style="font-size: 21px; line-height: 1.4em;"><%= rev[0] %></span> <div style="font-size: 11px; line-height: 1em">&raquo; <%= rev[1].strftime('%a %b %d, %I:%M:%S%p').downcase %></div></li>
 	<% end %>
 	</ul>
 </div>
 <textarea id="note" class="note" affect="neutral" style="width: 250px; position: absolute; display: none;"></textarea>
-<div class="instructions">
-	<h2 style="margin: 2px 0px 5px 0px; display: none;" id="comments-header">General Comments</h3>
-	<span id="the-general-comments"></span>
-</div>
 <div id="draft">
-	<h1 style="font-family: Arial; font-size: 22px; margin-top: 20px;"><%= @drft.title %> (<span id="version">original</span>)</h1>
+	<h1 style="font-family: Arial; font-size: 22px; margin-top: 20px;"><%= @drft.title %></h1>
 	<div id="draft_content">
 		<%= HTMLEntities.new.decode(@drft.content) %>
 	</div>
+</div>
+<div class="instructions">
+	<h2 style="margin: 2px 0px 5px 0px; display: none;" id="comments-header">General Comments</h3>
+	<span id="the-general-comments"></span>
 </div>
 
 <% @reviews.each_with_index do |rev, i| %>

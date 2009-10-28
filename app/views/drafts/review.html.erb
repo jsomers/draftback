@@ -45,6 +45,7 @@ li {
 }
 #draft p {
 	font-size: 14px;
+	line-height: 1.4em;
 }
 
 a.sentence {
@@ -53,15 +54,23 @@ a.sentence {
 }
 
 a.sentence:hover {
-	background-color: #ddd;
+	background-color: #eee;
 }
 
 a.sentence.up {
-	background-color: #99ffbb;
+	border-bottom: 1px solid #00b656;
+}
+
+a.sentence.up.has_note {
+	background-color: #99ffaa;
 }
 
 a.sentence.down { 
-	background-color: #ffbbaa;
+	border-bottom: 1px solid #ee2200;
+}
+
+a.sentence.down.has_note {
+	background-color: #ffdddd;
 }
 
 .note {
@@ -95,7 +104,7 @@ var hide_notes = function(affect) {
 	$(".note:visible[affect=" + affect + "]").each(function(e) {
 		if ($(this).val() == "") {
 			$(this).hide();
-			$("#sent-" + $(this).attr("id").split("-")[1]).css("text-decoration", "none");
+			$("#sent-" + $(this).attr("id").split("-")[1]).removeClass("has_note");
 		} else {
 			$(this).html($(this).val());
 		}
@@ -107,10 +116,10 @@ $(document).ready(function() {
 		if (e.keyCode == 13) {
 			$(this).hide();
 			if ($(this).val() != "") {
-				$("#sent-" + $(this).attr("id").split("-")[1]).css("text-decoration", "underline");
+				$("#sent-" + $(this).attr("id").split("-")[1]).addClass("has_note");
 				$(this).html($(this).val());
 			} else {
-				$("#sent-" + $(this).attr("id").split("-")[1]).css("text-decoration", "none");
+				$("#sent-" + $(this).attr("id").split("-")[1]).removeClass("has_note");
 			}
 		};
 	});
@@ -141,7 +150,7 @@ $(document).ready(function() {
 			$note.attr("affect", "neutral");
 			$note.hide();
 			if ($note.val() == "") {
-				$("#sent-" + $note.attr("id").split("-")[1]).css("text-decoration", "none");
+				$("#sent-" + $note.attr("id").split("-")[1]).removeClass("has_note");
 			};
 		};
 		$note.focus();
@@ -176,7 +185,7 @@ $(document).ready(function() {
 </script>
 <textarea id="note" class="note" affect="neutral" style="width: 250px; position: absolute; display: none;"></textarea>
 <div class="instructions">
-	<h3 style="margin: 2px 0px 5px 0px;">Instructions:</h3>
+	<h2 style="margin: 2px 0px 5px 0px;">Instructions:</h2>
 	<ol style="font-size: 11px;">
 		<li>Click a sentence <strong>once</strong> if you like it and <strong>twice</strong> if you don't.</li>
 		<li>A window for <strong>quick notes</strong> will pop up in either case. <strong>Notes disappear</strong> if you don't type anything.</li>
