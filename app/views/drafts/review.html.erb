@@ -78,6 +78,27 @@ a.sentence.down.has_note {
 	font-family: Courier;
 	height: 90px;
 }
+
+#tooltip {
+	position: absolute;
+	z-index: 3000;
+	border: 1px solid #86acc1;
+	background-color: #fff;
+	opacity: 0.85;
+	max-width: 450px;
+}
+#tooltip .contain {
+	background: #cde9f8;
+	border: 2px solid #fff;
+	color: black;
+	padding: 5px;
+}
+#tooltip h3, #tooltip div { 
+	margin: 0;
+	font-size: 12px;
+	font-weight: bold;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -120,6 +141,7 @@ $(document).ready(function() {
 				$(this).html($(this).val());
 			} else {
 				$("#sent-" + $(this).attr("id").split("-")[1]).removeClass("has_note");
+				$(this).html($(this).val());
 			}
 		};
 	});
@@ -151,6 +173,7 @@ $(document).ready(function() {
 			$note.hide();
 			if ($note.val() == "") {
 				$("#sent-" + $note.attr("id").split("-")[1]).removeClass("has_note");
+				$note.html($note.val());
 			};
 		};
 		$note.focus();
@@ -181,8 +204,38 @@ $(document).ready(function() {
 		};
 		return false;
 	});
+	
+	$("a.sentence").live("mouseover",
+		function(ev) {
+			var id = $(this).attr("id").split("-")[1];
+			if ($("#note-" + id).html() != "" && $("#note-" + id).html() != null) {
+				$("#show-note").html($("#note-" + id).html());
+				$("#tooltip").css("top", ev.pageY - 30 + "px");
+				$("#tooltip").css("left", ev.pageX + 20 + "px");
+				//$("#note-" + id).css("height", $("#note-" + id)[0].scrollHeight);
+				$("#tooltip").show();
+			} else {
+				$("#tooltip").hide();
+			}
+		}
+	);
+	
+	$("a.sentence").live("mouseout",
+		function(ev) {
+			var id = $(this).attr("id").split("-")[1];
+			$("#tooltip").hide();
+		}
+	);
+	
+	$("a.sentence").live("mousemove",
+		function(ev) {
+			$("#tooltip").css("top", ev.pageY - 30 + "px");
+			$("#tooltip").css("left", ev.pageX + 20 + "px");
+		}
+	);
 });
 </script>
+<div id="tooltip" style="display: none; right: auto;"><div class="contain"><h3><span id="show-note"></span></h3></div></div>
 <textarea id="note" class="note" affect="neutral" style="width: 250px; position: absolute; display: none;"></textarea>
 <div class="instructions">
 	<h2 style="margin: 2px 0px 5px 0px;">Instructions:</h2>
