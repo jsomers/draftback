@@ -20,7 +20,7 @@ class DraftsController < ApplicationController
     url = params[:draft_url]
     d = Draft.new(:url => url, :public_url => Digest::SHA256.new.hexdigest(url).first(7))
     d.save
-    redirect_to "/drafts/compose/#{params[:draft_url]}"
+    redirect_to "/#{params[:draft_url]}"
   end
   
   def save
@@ -70,7 +70,7 @@ class DraftsController < ApplicationController
   def refresh_review
     Review.find(session[:review_ids][params[:draft_id].to_i]).destroy
     session[:review_ids][params[:draft_id].to_i] = nil
-    redirect_to "/drafts/review/#{params[:public_url]}"
+    redirect_to "/review/#{params[:public_url]}"
   end
   
   def feedback
