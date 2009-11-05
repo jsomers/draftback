@@ -107,7 +107,7 @@ var t = null;
 
 var save_review = function(continuous) {
 	var content = $("#draft_content").html();
-	$.post("/drafts/save_review", {authenticity_token: AUTH_TOKEN, content: content, signature: $("#signature").attr("value"), general_comments: $("#general_comments").val()},
+	$.post("/drafts/save_review", {authenticity_token: AUTH_TOKEN, draft_id: <%= @draft.id %>, content: content, signature: $("#signature").attr("value"), general_comments: $("#general_comments").val()},
 		function(ret) {
 			var ret = JSON.parse(ret);
 			var now = new Date();
@@ -245,8 +245,10 @@ $(document).ready(function() {
 		<li>If you do leave comments, <strong>hit enter</strong> to close the note window. <strong>Everything will be saved automatically</strong>.</li>
 	</ol>
 </div>
+
 <div id="draft">
-	<h1 style="font-family: Arial; font-size: 22px; margin-top: 20px;"><%= @drft.title %></h1>
+	<div style="float: right; margin-top: 10px;"><a href="/drafts/refresh_review?public_url=<%= params[:id] %>&amp;draft_id=<%= @draft.id %>">Refresh latest draft and start over</a></div>
+	<h1 style="font-family: Arial; font-size: 22px; margin-top: 20px; line-height: 1.2em;"><%= @draft.title %></h1>
 	<div id="draft_content">
 	<% if @content.nil? %>
 		Whoops, it looks like something's gone horribly wrong and we've lost your work.

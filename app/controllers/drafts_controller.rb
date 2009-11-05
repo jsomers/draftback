@@ -33,21 +33,24 @@ class DraftsController < ApplicationController
   end
   
   def review
-    @drft = Draft.find_by_public_url(params[:id])
-    if session[:review_id].nil?
-      reviewified = @drft.reviewify
-      rev = Review.new(:draft_id => @drft.id, :n_sentences => reviewified[:n_sentences])
+    @draft = Draft.find_by_public_url(params[:id])
+    if session[:review_ids].nil? then session[:review_ids] = {} end
+    if session[:review_ids][@draft.id].nil? # Time to set up a new review for this <draft, session>.
+      reviewified = @draft.reviewify
+      rev = Review.new(:draft_id => @draft.id, :n_sentences => reviewified[:n_sentences])
+      rev.content = reviewified[:content]
       rev.save
-      session[:review_id] = rev.id
+      session[:review_ids][@draft.id] = rev.id
       @content = reviewified[:content]
       @n_zeros = reviewified[:n_sentences]
     else
-      @content = HTMLEntities.new.decode(Review.find(session[:review_id]).content)
-      @n_zeros = Review.find(session[:review_id]).n_sentences
-      @general_comments = Review.find(session[:review_id]).general_comments
-      @signature = Review.find(session[:review_id]).signature
+      rev = Review.find(session[:review_ids][@draft.id])
+      @content = HTMLEntities.new.decode(rev.content)
+      @n_zeros = rev.n_sentences
+      @general_comments = rev.general_comments
+      @signature = rev.signature
       if @content.nil?
-        reviewified = @drft.reviewify
+        reviewified = @draft.reviewify
         @content = reviewified[:content]
         @n_zeros = reviewified[:n_sentences]
       end
@@ -55,13 +58,18 @@ class DraftsController < ApplicationController
   end
   
   def save_review
-    rev = Review.find(session[:review_id])
+    rev = Review.find(session[:review_ids][params[:draft_id].to_i])
     rev.content = HTMLEntities.new.encode(params[:content])
     rev.signature = params[:signature] unless params[:signature].empty?
     rev.general_comments = params[:general_comments] unless params[:general_comments].empty?
     rev.updated_at = Time.new
     rev.save
     render :json => Time.new
+  end
+  
+  def refresh_review
+    session[:review_ids][params[:draft_id].to_i] = nil
+    redirect_to "/drafts/review/#{params[:public_url]}"
   end
   
   def feedback
