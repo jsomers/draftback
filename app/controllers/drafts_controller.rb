@@ -75,6 +75,6 @@ class DraftsController < ApplicationController
   
   def feedback
     @drft = Draft.find_by_url(params[:id])
-    @reviews = @drft.reviews
+    @reviews = @drft.reviews.sort {|a, b| a.updated_at <=> b.updated_at}
   end
 end

@@ -53,6 +53,10 @@ a.sentence {
 	text-decoration: none;
 }
 
+a.sentence.has_note {
+	background-color: #eee;
+}
+
 a.sentence:hover {
 	background-color: #eee;
 }
@@ -76,6 +80,10 @@ a.sentence.down.has_note {
 a.sentence .heading {
 	color: #333;
 	text-decoration: none;
+}
+
+a.sentence.has_note .heading {
+	background-color: #eee;
 }
 
 a.sentence:hover .heading {
@@ -210,6 +218,13 @@ $(document).ready(function() {
 		clearTimeout(t);
 		$(".note").each(function(e) {
 			$(this).hide();
+			if ($(this).val() != "") {
+				$("#sent-" + $(this).attr("id").split("-")[1]).addClass("has_note");
+				$(this).html($(this).val());
+			} else {
+				$("#sent-" + $(this).attr("id").split("-")[1]).removeClass("has_note");
+				$(this).html($(this).val());
+			}
 		});
 		var i = $(this).attr("id").split("-")[1] * 1
 		if (times[i] == '0') {
