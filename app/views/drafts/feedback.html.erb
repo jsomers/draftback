@@ -48,8 +48,10 @@ li {
 }
 
 li.name {
+	-moz-border-radius-bottomleft:4px;
+	-moz-border-radius-topleft:4px;
 	position: relative;
-	left: -20px;
+	left: -10px;
 	cursor: pointer;
 	padding-left: 40px;
 	width: 259px;
@@ -72,11 +74,19 @@ a.sentence {
 }
 
 a.sentence.up {
-	background-color: #99ffbb;
+	border-bottom: 1px solid #00b656;
+}
+
+a.sentence.up.has_note {
+	background-color: #99ffaa;
 }
 
 a.sentence.down { 
-	background-color: #ffbbaa;
+	border-bottom: 1px solid #ee2200;
+}
+
+a.sentence.down.has_note {
+	background-color: #ffdddd;
 }
 
 .note {

@@ -86,7 +86,7 @@ var wordCountL10n = {
 
 <div class="wrap">
 		<div id="icon-edit" class="icon32"></div>
-	<h2 style="padding-bottom: 6px; margin-bottom: 10px; border-bottom: 1px solid #e6e6e6; font-size: 20px"><strong>Draft away!</strong> <span style="font-size: 18px">Then, when you're ready to share, send friends here &rarr; <span style="font-weight: bold; font-style: normal; text-align: center; width: 250px; font-size: 22px;" id="public_link"><a href="http://draftblast.com/review/<%= @drft.public_url %>" target="_blank" style="background-color: #FFFBCC;">draftblast.com/review/<%= @drft.public_url %></a></span></span></h2>
+	<h2 style="padding-bottom: 6px; margin-bottom: 10px; border-bottom: 1px solid #e6e6e6; font-size: 20px"><strong>Draft away!</strong> <span style="font-size: 18px">Then, when you're ready to share, send friends here &rarr; <span style="font-weight: bold; font-style: normal; text-align: center; width: 250px; font-size: 22px;" id="public_link"><a href="http://draftback.com/review/<%= @drft.public_url %>" target="_blank" style="background-color: #FFFBCC;">draftback.com/review/<%= @drft.public_url %></a></span></span></h2>
 <form name="post" action="post.php" method="post" id="post">
 <div id="poststuff" class="metabox-holder" style="margin-top: 0px; padding-top: 0px;">
 
@@ -104,7 +104,7 @@ var wordCountL10n = {
 	</div>
 	<div id="quicktags"><script type="text/javascript">edToolbar()</script></div>
 
-<div id='editorcontainer'><textarea rows='10' class='theEditor' cols='40' name='content' tabindex='2' id='content'>
+<div id='editorcontainer'><textarea rows='20' class='theEditor' cols='40' name='content' tabindex='2' id='content'>
 	<%= @drft.content %>
 </textarea></div>
 
@@ -119,7 +119,7 @@ var wordCountL10n = {
 <a id="save-now" style="cursor: pointer">Save now</a> | <span id="last-edit">Last saved at <span id="saved-at-hour"><%= @drft.updated_at.strftime("%I:%M:%S%p").downcase %></span> on <span id="saved-at-day">October 21, 2009</span></span>	</td>
 
 </tr></tbody></table>
-<div style="margin-top: 5px; font-size: 11px"><strong style="color: #ff4444">Remember:</strong> <a href="">http://draftblast.com/<%= @drft.url %></a> is <strong>your private URL</strong> for editing this draft. Don't lose it!</div>
+<div style="margin-top: 5px; font-size: 11px"><strong style="color: #ff4444">Remember:</strong> <a href="">http://draftback.com/<%= @drft.url %></a> is <strong>your private URL</strong> for editing this draft. Don't lose it!</div>
 </div>
 </div>
 <br class="clear" />
