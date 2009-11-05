@@ -4,7 +4,7 @@ class Draft < ActiveRecord::Base
   def reviewify
     # TODO: contractions, < \/ div > 
     raw = HTMLEntities.new.decode(self.content)
-    raw = raw.gsub(/<h(\d)>/) {|s| "&lt;span style=\"font-weight: bold; font-size: #{22 - ($1.to_i * 2)}px\"&gt;"}
+    raw = raw.gsub(/<h(\d)>/) {|s| ".&lt;span style=\"font-weight: bold; font-size: #{22 - ($1.to_i * 2)}px\"&gt;"}
     raw = raw.gsub(/<\/h\d>/) {|s| "&lt;/span&gt;."}
     preproc = StanfordParser::DocumentPreprocessor.new
     sentences = preproc.getSentencesFromString(raw)
@@ -28,7 +28,8 @@ class Draft < ActiveRecord::Base
       if strt then sentences[i] = sentences[i].insert(0, "<p>") end
     end
     glob = HTMLEntities.new.decode(sentences.join(" "))
-    glob = glob.gsub("< span style =", "<span style=").gsub("< \\\/ span >.", "</span>").gsub("< br >", "<br>").gsub("'' >", "\">")
+    glob = glob.gsub(/<a class="sentence" href="#" id="sent\-\d">\.<\/a>/) {|s| ""}.gsub("</p>.", "</p>")
+    glob = glob.gsub("< span style =", "<span class=\"heading\" style=").gsub("< \\\/ span >.", "</span>").gsub("< br >", "<br>").gsub("'' >", "\">")
     return {:content => glob, :n_sentences => "0" * sentences.length}
   end
 end

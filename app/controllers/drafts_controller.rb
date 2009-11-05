@@ -68,6 +68,7 @@ class DraftsController < ApplicationController
   end
   
   def refresh_review
+    Review.find(session[:review_ids][params[:draft_id].to_i]).destroy
     session[:review_ids][params[:draft_id].to_i] = nil
     redirect_to "/drafts/review/#{params[:public_url]}"
   end
