@@ -3,6 +3,10 @@ class DraftsController < ApplicationController
   require 'htmlentities'
   require 'stanfordparser'
   
+  def landing
+    @title = "Concise, rapid feedback for writing"
+  end
+  
   def compose
     @drft = Draft.find_by_url(params[:id])
     if !@drft
@@ -13,6 +17,7 @@ class DraftsController < ApplicationController
   end
 
   def create
+    @title = "Create a new draft"
     @the_url = params[:draft_id]
   end
   
@@ -69,6 +74,7 @@ class DraftsController < ApplicationController
   
   def review
     @draft = Draft.find_by_public_url(params[:id])
+    @title = "Reviewing \"#{@draft.title}\""
     if session[:review_ids].nil? then session[:review_ids] = {} end
     if session[:review_ids][@draft.id].nil? # Time to set up a new review for this <draft, session>.
       reviewified = @draft.reviewify
@@ -125,6 +131,7 @@ class DraftsController < ApplicationController
   
   def feedback
     @drft = Draft.find_by_url(params[:id])
+    @title = "Feedback for \"#{@drft.title}\""
     @reviews = @drft.reviews.sort {|a, b| a.updated_at <=> b.updated_at}
   end
 end
