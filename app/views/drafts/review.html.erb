@@ -306,6 +306,8 @@ $(document).ready(function() {
 				if ($(this).attr("id") != "flote") {
 					$(this).remove();
 					$(this).hide();
+					$("#mark-" + $(this).attr("id").split("-")[1]).remove();
+					$("#mark-" + $(this).attr("id").split("-")[1]).hide();
 				}
 			} else {
 				$(this).html($(this).val());
@@ -329,6 +331,8 @@ $(document).ready(function() {
 				if ($(this).attr("id") != "flote") {
 					$(this).remove();
 					$(this).hide();
+					$("#mark-" + $(this).attr("id").split("-")[1]).remove();
+					$("#mark-" + $(this).attr("id").split("-")[1]).hide();
 				}
 			} else {
 				$(this).html($(this).val());
