@@ -105,6 +105,7 @@ var wordCountL10n = {
 	<div id="editor-toolbar">
 		<label class="screen-reader-text" for="title">Title</label>
 		Title: <input type="text" name="post_title" size="35" tabindex="1" value="<%= @drft.title %>" id="title" autocomplete="off" />
+		E-mail: <input type="text" name="email" size="20" tabindex="2" value="<%= (@drft.user ? @drft.user.email : "") %>" id="email" autocomplete="off"/> <span style="font-size: 11px;">(add this if you'd rather not have to check <strong>draftback.com/feedback/<%= @drft.url %></strong> for feedback)</span>
 		<div class="zerosize"><input accesskey="e" type="button" onclick="switchEditors.go('content')" /></div>
 			<a id="edButtonHTML" class="hide-if-no-js" onclick="switchEditors.go('content', 'html');">HTML</a>
 			<a id="edButtonPreview" class="active hide-if-no-js" onclick="switchEditors.go('content', 'tinymce');">Visual</a>
@@ -126,7 +127,7 @@ var wordCountL10n = {
 <span style="font-size: 13px;"><a id="save-now" style="cursor: pointer; font-weight: bold;">Save now</a> | <span id="last-edit">Last saved at <span id="saved-at-hour"><%= @drft.updated_at.strftime("%I:%M:%S%p").downcase %></span> on <span id="saved-at-day"><%= @drft.updated_at.strftime("%B %d, %Y") %></span></span></span>	</td>
 
 </tr></tbody></table>
-<div style="margin-top: 10px; font-size: 16px"><strong style="color: #ff4444">Remember:</strong> <a href="">http://draftback.com/<%= @drft.url %></a> is <strong>your private URL</strong> for editing this draft. Bookmark this page!</div>
+<div style="margin-top: 10px; font-size: 16px"><strong style="color: #ff4444">Remember:</strong> <a href="">draftback.com/<%= @drft.url %></a> is <strong>your private URL</strong> for editing this draft, and <a href="/feedback/<%= @drft.url %>">draftback.com<strong>/feedback</strong>/<%= @drft.url %></a> is where feedback will go.</div>
 </div>
 </div>
 <br class="clear" />

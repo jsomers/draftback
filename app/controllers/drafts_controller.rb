@@ -17,13 +17,24 @@ class DraftsController < ApplicationController
   end
   
   def new
+    if (em = params[:email][/\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}\b/])
+      u = User.find_by_email(em)
+      if u.nil?
+        u = User.new(:email => em)
+        u.save
+        old_timer = false
+      else
+        old_timer = true
+      end
+    end
     url = params[:draft_url]
     public_url = Digest::SHA256.new.hexdigest(url).first(7)
     d = Draft.new(
+      :user_id => (em ? u.id : nil),
       :url => url, 
       :public_url => public_url,
       :title => "[title goes here]",
-      :content => "<p>Welcome to draftback!</p>
+      :content => (em && old_timer ? "Welcome back! Delete me and start drafting!" : "<p><h3>Is this your first time?</h3></p>
                    <ol>
                    <li>Use this editor to compose your draft, and remember the URL of this page &mdash; <strong>draftback.com/#{url}</strong> &mdash;
                    so that you can come back later and make changes.</li>
@@ -36,10 +47,11 @@ class DraftsController < ApplicationController
                    <li>When you're finished, send your friends to <strong>draftback.com/review/#{public_url}</strong> (the highlighted link above), 
                    where they'll be able to read and review your work. You may want to preview that page yourself just to see how it works.</li>
                    
-                   <li>Finally, we'll send you an e-mail as soon as someone submits feedback on your draft. There will be a page,
-                   <strong>draftback.com/feedback/#{url}</strong>, where you can see everyone's comments at a glance.</li>
+                   <li>Finally, " + (em ? "we'll send an e-mail to <strong>#{em}</strong> as soon as someone submits feedback on your draft, and " : "") + 
+                   "there will be a page, <strong>draftback.com/feedback/#{url}</strong>, where you can see everyone's comments at a glance.</li>
                    
                    <li>Now delete this nonsense and start drafting!</li>"
+                   )
     )
     d.save
     redirect_to "/#{params[:draft_url]}"

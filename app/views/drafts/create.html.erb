@@ -2,10 +2,19 @@
 	<div style="text-align: center; font-size: 32px; color: #444; margin-top: 80px; margin-right: 200px;">
 		http://draftback.com/<strong><%= @the_url %></strong>
 		<div style="font-size: 20px; color: #777; font-family: Georgia; margin-top: 20px;">
-			There are no drafts here. Would you like to create one? <br/>
+			There are no drafts here. Would you like to create one? <br/><br>
 			<% form_tag(:controller => "drafts", :action => "new", :draft_url => @the_url) do -%>
+				<table style="text-align: center; margin: 0 auto; border: 2px solid #bbb; padding: 10px;">
+					<tr>
+						<td style="font-size: 16px;">E-mail address:</td>
+						<td><input type="text" name="email" id="email" value="" style="font-size: 20px; padding: 3px; text-align: center;"/></td>
+					</tr>
+				</table>
+				<p style="width: 500px; color: #555; text-align: center; margin: 0 auto; margin-top: 10px;">If you enter your e-mail, we can <strong>notify you when someone submits comments/feedback on your work</strong>. Otherwise you'll have to check yourself.</p>
 				<div><%= submit_tag 'Create draft', {:style => "font-size: 28px; margin-top: 20px;"} %></div>
 			<% end -%>
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">$("#email").focus();</script>

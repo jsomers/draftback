@@ -270,12 +270,20 @@ a.sentence.down.has_note .heading {
 <div id="tooltip" style="display: none; right: auto;"><div class="contain"><h3><span id="show-note"></span></h3></div></div>
 <div id="tooltipflote" style="display: none; right: auto;"><div class="contain"><h3><span id="show-flote"></span></h3></div></div>
 <div style="position: absolute; top: 65px; left: 0px; padding-left: 20px; width: 250px; color: #aaa;">
-	<% if !@reviews.empty? %><h2 style="font-weight: normal; color: white">View feedback from:</h2><% end %>
+	<% if !@reviews.empty? %>
+		<h2 style="font-weight: normal; color: white">View feedback from:</h2>
+	<% else %>
+		<h2 style="font-weight: normal; color: white; line-height: 1.2em;">No feedback here yet. <br/><br/>Send friends to <br/><span style="padding-left: 10px; font-size: 14px; text-decoration: underline;"><strong>draftback.com/review/<%= @drft.public_url %></strong></span><br/> to get some!</h2>
+	<% end %>
 	<ul style="margin-top: 10px;">
 	<% @reviews.collect {|r| [r.signature, r.updated_at]}.each_with_index do |rev, i| %>
 		<li class="name" review_id="<%= i %>"><span style="font-size: 18px; line-height: 1.4em;"><%= (!rev[0].nil? ? rev[0] : "[anonymous]") %></span> <div style="font-size: 11px; line-height: 1em">&raquo; <%= rev[1].strftime('%a %b %d, %I:%M:%S%p').downcase %></div></li>
 	<% end %>
 	</ul>
+	<% if !@reviews.empty? %>
+		<br/><br/>
+		Send friends to <br/><span style="padding-left: 10px; font-size: 14px; text-decoration: underline;"><strong>draftback.com/review/<%= @drft.public_url %></strong></span><br/> to get more comments!
+	<% end %>
 </div>
 <textarea id="note" class="note" affect="neutral" style="width: 250px; position: absolute; display: none;"></textarea>
 <div id="draft">
