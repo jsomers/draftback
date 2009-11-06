@@ -196,6 +196,9 @@ a.sentence.down.has_note .heading {
 		//$("#version").html("reviewed by <span style='color: #d54e21;'>" + $("#review-" + id).attr("signature") + "</span>")
 	};
 	$(document).ready(function() {
+		$(".mark").each(function() {
+			$(this).css("top", ($(this).css("top").split("px")[0] - 86) + "px");
+		});
 		<% if (rev_id = params[:selected_review]) %>
 			select_review(<%= rev_id %>);
 		<% else %>
