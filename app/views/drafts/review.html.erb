@@ -173,7 +173,8 @@ var save_review = function(continuous) {
 	$.post("/drafts/save_review", {
 		authenticity_token: AUTH_TOKEN, 
 		draft_id: <%= @draft.id %>, 
-		content: content, 
+		content: content,
+		title_classes: $("#sent-0").attr("class"),
 		signature: $("#signature").attr("value"), 
 		general_comments: $("#general_comments").val()
 	},
@@ -199,21 +200,51 @@ var hide_notes = function(affect) {
 	});
 };
 
-$(document).ready(function() {
-	var flote_count = 0;
-	$("#draft").click(function(ev) {
-		if (ev.shiftKey) {
-			$flote = $("#flote").clone();
-			$flote.appendTo("#draft_content");
-			$flote.attr("id", "flote-" + flote_count);
-			flote_count += 1;
-			$flote.val($flote.val().replace("\n", ""));
-			$flote.css("top", (ev.pageY - 10) + "px");
-			$flote.css("left", (ev.pageX - 10) + "px");
-			$flote.show();
-			$flote.focus();
+var send_review = function() {
+	$.ajax({
+		type: "GET",
+		url: "/drafts/submit_review", 
+		data: ({ authenticity_token: AUTH_TOKEN, draft_id: <%= @draft.id %> }),
+		success: function(ret) {
+			alert("Sent!")
+		},
+		failure: function(ret) {
+			alert("Something went wrong! Try again in a second, or refresh the page.")
 		}
 	});
+};
+
+$(document).ready(function() {
+	$("#send-review").click(function(ev) {
+		var content = $("#draft_content").html();
+		$.ajax({
+			type: "POST",
+			url: "/drafts/save_review", 
+			data: ({ authenticity_token: AUTH_TOKEN, draft_id: <%= @draft.id %>, content: content, title_classes: $("#sent-0").attr("class"), signature: $("#signature").attr("value"), general_comments: $("#general_comments").val()}),
+			success: function(ret) {
+				send_review();
+			},
+			failure: function(ret) {
+				alert("Something went wrong! Try again or refresh the page.");
+			}
+		});
+		return false;
+	});
+	
+    var flote_count = 0;
+    $("#draft").click(function(ev) {
+    	if (ev.shiftKey) {
+    		$flote = $("#flote").clone();
+    		$flote.appendTo("#draft_content");
+    		$flote.attr("id", "flote-" + flote_count);
+    		flote_count += 1;
+    		$flote.val($flote.val().replace("\n", ""));
+    		$flote.css("top", (ev.pageY - 10) + "px");
+    		$flote.css("left", (ev.pageX - 10) + "px");
+    		$flote.show();
+    		$flote.focus();
+    	}
+    });
 	
 	$(".mark").live("mouseover",
 		function(ev) {
@@ -424,7 +455,7 @@ $(document).ready(function() {
 </div>
 
 <div id="draft">
-	<h1 style="font-family: Arial; font-size: 22px; margin-top: 20px; line-height: 1.2em;"><a class="sentence" href="#" id="sent-0"><%= @draft.title %></a></h1>
+	<h1 style="font-family: Arial; font-size: 22px; margin-top: 20px; line-height: 1.2em;"><a class="<%= @title_classes %>" href="#" id="sent-0"><%= @draft.title %></a></h1>
 	<div id="draft_content">
 	<% if @content.nil? %>
 		Whoops, it looks like something's gone horribly wrong and we've lost your work.
@@ -436,7 +467,17 @@ $(document).ready(function() {
 </a>
 <script language="javascript" src="/javascripts/simpleswap.js"></script>
 <div class="instructions">
-	<h3 style="margin: 2px 0px 5px 0px;">General Comments:</h3><textarea id="general_comments" style="width: 100%; height: 90px; padding: 10px; font-family: Courier"><%= @general_comments %></textarea>
+	<h3 style="margin: 2px 0px 5px 0px;">General Comments:</h3><textarea id="general_comments" name="general_comments" style="width: 100%; height: 90px; padding: 10px; font-family: Courier"><%= @general_comments %></textarea>
 	<hr>
-	<div style="float: left; font-size: 12px; padding-top: 5px;"><h3 style="margin: 2px 0px 5px 0px;">All done? Sign your name: <input type="text" style="font-family: Verdana; width: 180px; height: 25px; vertical-align: middle; padding-top: 2px; font-size: 13px; text-align: center; font-weight: bold; color: #555" id="signature" value="<%= @signature %>"/> and</h3></div> <div style="float: right"><a href="#" id="submit-review"><img src="/images/button.png" oversrc="/images/button-hover.png"/></a></div>
+	<div style="float: left; font-size: 12px; padding-top: 5px;">
+		<h3 style="margin: 2px 0px 5px 0px;">All done? Sign your name: <input type="text" style="font-family: Verdana; width: 180px; height: 25px; vertical-align: middle; padding-top: 2px; font-size: 13px; text-align: center; font-weight: bold; color: #555" id="signature" name="signature" value="<%= @signature %>"/>
+			 and 
+		</h3>
+	</div> 
+	<input type="hidden" name="draft_id" value="<%= @draft.id %>"/>
+	<div style="float: right">
+		<a href="#" id="send-review">
+			<img type="image" src="/images/button.png" oversrc="/images/button-hover.png"/>
+		</a>
+	</div>
 </div>

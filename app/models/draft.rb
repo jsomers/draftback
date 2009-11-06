@@ -51,6 +51,7 @@ class Draft < ActiveRecord::Base
     glob = glob.gsub(/<a class="sentence" href="#" id="sent\-\d">\.<\/a>/) {|s| ""}.gsub("</p>.", "</p>")
     glob = glob.gsub("< span style =", "<span class=\"heading\" style=").gsub("< \\\/ span >.", "</span>").gsub("< br >", "<br>").gsub("'' >", "\">")
     glob = glob.gsub(" -LRB- ", " (").gsub(" -RRB-", ")")
-    return {:content => glob, :n_sentences => "0" * sentences.length}
+    glob = glob.gsub("</p></a>", "</a></p>")
+    return {:content => glob, :n_sentences => "0" * (sentences.length + 1)}
   end
 end

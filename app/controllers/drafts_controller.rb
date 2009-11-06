@@ -61,6 +61,7 @@ class DraftsController < ApplicationController
     drft = Draft.find(params[:draft_id].to_i)
     drft.content = HTMLEntities.new.encode(params[:content])
     drft.title = params[:title]
+    drft.email = params[:email][/\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}\b/]
     drft.updated_at = Time.new
     drft.save
     render :json => drft
@@ -77,16 +78,19 @@ class DraftsController < ApplicationController
       session[:review_ids][@draft.id] = rev.id
       @content = reviewified[:content]
       @n_zeros = reviewified[:n_sentences]
+      @title_classes = "sentence"
     else
       rev = Review.find(session[:review_ids][@draft.id])
       @content = HTMLEntities.new.decode(rev.content)
       @n_zeros = rev.n_sentences
+      @title_classes = rev.title_classes
       @general_comments = rev.general_comments
       @signature = rev.signature
       if @content.nil?
         reviewified = @draft.reviewify
         @content = reviewified[:content]
         @n_zeros = reviewified[:n_sentences]
+        @title_classes = "sentence"
       end
     end
   end
@@ -96,6 +100,7 @@ class DraftsController < ApplicationController
     rev.content = HTMLEntities.new.encode(params[:content])
     rev.signature = params[:signature] unless params[:signature].empty?
     rev.general_comments = params[:general_comments] unless params[:general_comments].empty?
+    rev.title_classes = params[:title_classes]
     rev.updated_at = Time.new
     rev.save
     render :json => Time.new
@@ -105,6 +110,17 @@ class DraftsController < ApplicationController
     Review.find(session[:review_ids][params[:draft_id].to_i]).destroy
     session[:review_ids][params[:draft_id].to_i] = nil
     redirect_to "/review/#{params[:public_url]}"
+  end
+  
+  def submit_review
+    draft = Draft.find(params[:draft_id].to_i)
+    if draft.user
+      review = Review.find(session[:review_ids][draft.id])
+      UserNotifier.deliver_new_review_notification(draft.user, review)
+    end
+    render :text => "Sent!"
+  rescue
+    render :text => "Fail"
   end
   
   def feedback

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091106024435) do
+ActiveRecord::Schema.define(:version => 20091106055611) do
 
   create_table "drafts", :force => true do |t|
     t.datetime "created_at"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(:version => 20091106024435) do
     t.string   "signature"
     t.string   "n_sentences"
     t.text     "general_comments"
+    t.string   "title_classes"
   end
 
   create_table "users", :force => true do |t|

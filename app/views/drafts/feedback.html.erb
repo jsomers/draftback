@@ -273,7 +273,9 @@ a.sentence.down.has_note .heading {
 	<% if !@reviews.empty? %>
 		<h2 style="font-weight: normal; color: white">View feedback from:</h2>
 	<% else %>
-		<h2 style="font-weight: normal; color: white; line-height: 1.2em;">No feedback here yet. <br/><br/>Send friends to <br/><span style="padding-left: 10px; font-size: 14px; text-decoration: underline;"><strong>draftback.com/review/<%= @drft.public_url %></strong></span><br/> to get some!</h2>
+		<h2 style="font-weight: normal; color: white; line-height: 1.2em;">No feedback here yet.</h2>
+		<div style="color: #ffeeaa; font-family: Verdana;">
+		Send friends to: <br/><span style="padding-left: 10px; font-size: 12px; text-decoration: underline;"><strong>draftback.com/review/<%= @drft.public_url %></strong></span></div>
 	<% end %>
 	<ul style="margin-top: 10px;">
 	<% @reviews.collect {|r| [r.signature, r.updated_at]}.each_with_index do |rev, i| %>
@@ -281,8 +283,8 @@ a.sentence.down.has_note .heading {
 	<% end %>
 	</ul>
 	<% if !@reviews.empty? %>
-		<br/><br/>
-		Send friends to <br/><span style="padding-left: 10px; font-size: 14px; text-decoration: underline;"><strong>draftback.com/review/<%= @drft.public_url %></strong></span><br/> to get more comments!
+		<div style="color: #ffeeaa; font-family: Verdana;">
+		Send friends to <br/><span style="padding-left: 10px; font-size: 12px; text-decoration: underline;"><strong>draftback.com/review/<%= @drft.public_url %></strong></span></div>
 	<% end %>
 </div>
 <textarea id="note" class="note" affect="neutral" style="width: 250px; position: absolute; display: none;"></textarea>

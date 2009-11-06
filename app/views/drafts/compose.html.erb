@@ -17,7 +17,7 @@ $.fn.flash = function(duration) {
 
 var save_draft = function(continuous) {
 	var content = tinyMCE.get("content").getContent();
-	$.post("/drafts/save", {authenticity_token: AUTH_TOKEN, draft_id: <%= @drft.id %>, content: content, title: $("#title").attr("value")},
+	$.post("/drafts/save", {authenticity_token: AUTH_TOKEN, draft_id: <%= @drft.id %>, content: content, email: $("#email").attr("value"), title: $("#title").attr("value")},
 		function(ret) {
 			var ret = JSON.parse(ret);
 			var now = new Date();

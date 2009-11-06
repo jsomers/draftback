@@ -1,0 +1,9 @@
+Hi,
+<% sig = @review.signature %>
+<%= (!(sig.nil? || sig.empty?) ? sig : "Someone") %> has submitted feedback on <%= (!(titl = @review.draft.title).empty? ? "\"#{titl}.\"" : "your draft.") %><% if @review.general_comments.empty? %> You can view it at http://draftback.com/feedback/<%= @review.draft.url %>. Thanks! <% else %> Here were some of their general comments:
+
+	<%= @review.general_comments %>
+<% sorted_reviews = @review.draft.reviews.sort {|a, b| a.updated_at <=> b.updated_at} %>
+You can see the details here: http://draftback.com/feedback/<%= @review.draft.url %>?selected_review=<%= sorted_reviews.index(sorted_reviews.select {|x| x.id == @review.id}.first) %>. Thanks! <% end %>
+
+- The [draft]back team
