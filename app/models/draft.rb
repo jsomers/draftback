@@ -1,7 +1,6 @@
 class Draft < ActiveRecord::Base
   has_many :reviews
   belongs_to :user
-  validates_uniqueness_of :url, :public_url
   
   def reviewify
     # TODO: contractions, < \/ div > 
