@@ -18,7 +18,29 @@ class DraftsController < ApplicationController
   
   def new
     url = params[:draft_url]
-    d = Draft.new(:url => url, :public_url => Digest::SHA256.new.hexdigest(url).first(7))
+    public_url = Digest::SHA256.new.hexdigest(url).first(7)
+    d = Draft.new(
+      :url => url, 
+      :public_url => public_url,
+      :title => "[title goes here]",
+      :content => "<p>Welcome to draftback!</p>
+                   <ol>
+                   <li>Use this editor to compose your draft, and remember the URL of this page &mdash; <strong>draftback.com/#{url}</strong> &mdash;
+                   so that you can come back later and make changes.</li>
+                   
+                   <li>Your work will be automatically saved every two minutes, but you can click the \"Save now\" link below if you're 
+                   especially anxious.</li>
+                   
+                   <li>Don't forget to add a clever title using the box just above this editor.</li>
+                   
+                   <li>When you're finished, send your friends to <strong>draftback.com/review/#{public_url}</strong> (the highlighted link above), 
+                   where they'll be able to read and review your work. You may want to preview that page yourself just to see how it works.</li>
+                   
+                   <li>Finally, we'll send you an e-mail as soon as someone submits feedback on your draft. There will be a page,
+                   <strong>draftback.com/feedback/#{url}</strong>, where you can see everyone's comments at a glance.</li>
+                   
+                   <li>Now delete this nonsense and start drafting!</li>"
+    )
     d.save
     redirect_to "/#{params[:draft_url]}"
   end

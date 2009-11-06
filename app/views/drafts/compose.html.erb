@@ -1,3 +1,10 @@
+<script type='text/javascript'>
+/* <![CDATA[ */
+var quicktagsL10n = {};
+/* ]]> */
+</script>
+<%= javascript_include_tag "wp" %>
+
 <style type="text/css">
 #wpbody { margin-left: 20px; }
 </style>
@@ -15,7 +22,7 @@ var save_draft = function(continuous) {
 			var ret = JSON.parse(ret);
 			var now = new Date();
 			$("#saved-at-hour").text(now.format("h:MM:sstt"));
-			$("#saved-at-day").text(now.format("dddd dS, yyyy"));
+			$("#saved-at-day").text(now.format("mmmm dd, yyyy"));
 			$("#last-edit").flash(300);
 		}
 	)
@@ -116,7 +123,7 @@ var wordCountL10n = {
 	<td id="wp-word-count">Word count: <span id="word-count">594</span></td>
 	<td class="autosave-info">
 	<span id="autosave">&nbsp;</span>
-<a id="save-now" style="cursor: pointer">Save now</a> | <span id="last-edit">Last saved at <span id="saved-at-hour"><%= @drft.updated_at.strftime("%I:%M:%S%p").downcase %></span> on <span id="saved-at-day">October 21, 2009</span></span>	</td>
+<span style="font-size: 13px;"><a id="save-now" style="cursor: pointer; font-weight: bold;">Save now</a> | <span id="last-edit">Last saved at <span id="saved-at-hour"><%= @drft.updated_at.strftime("%I:%M:%S%p").downcase %></span> on <span id="saved-at-day"><%= @drft.updated_at.strftime("%B %d, %Y") %></span></span></span>	</td>
 
 </tr></tbody></table>
 <div style="margin-top: 10px; font-size: 16px"><strong style="color: #ff4444">Remember:</strong> <a href="">http://draftback.com/<%= @drft.url %></a> is <strong>your private URL</strong> for editing this draft. Bookmark this page!</div>

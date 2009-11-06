@@ -126,6 +126,16 @@ a.sentence.down.has_note .heading {
 	width: 400px;
 }
 
+.flote {
+	padding: 10px;
+	font-family: Courier;
+	height: 90px;
+}
+
+.mark {
+	cursor: pointer;
+}
+
 #tooltip {
 	position: absolute;
 	z-index: 3000;
@@ -141,6 +151,26 @@ a.sentence.down.has_note .heading {
 	padding: 5px;
 }
 #tooltip h3, #tooltip div { 
+	margin: 0;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+#tooltipflote {
+	position: absolute;
+	z-index: 3000;
+	border: 1px solid #86acc1;
+	background-color: #fff;
+	opacity: 0.85;
+	max-width: 450px;
+}
+#tooltipflote .contain {
+	background: #cde9f8;
+	border: 2px solid #fff;
+	color: black;
+	padding: 5px;
+}
+#tooltipflote h3, #tooltipflote div { 
 	margin: 0;
 	font-size: 12px;
 	font-weight: bold;
@@ -205,12 +235,42 @@ a.sentence.down.has_note .heading {
 				$("#tooltip").css("left", ev.pageX + 20 + "px");
 			}
 		);
+		
+		$(".mark").live("mouseover",
+			function(ev) {
+				var id = $(this).attr("id").split("-")[1];
+				if ($("#flote-" + id).html() != "" && $("#flote-" + id).html() != null) {
+					$("#show-flote").html($("#flote-" + id).html());
+					$("#tooltipflote").css("top", ev.pageY - 30 + "px");
+					$("#tooltipflote").css("left", ev.pageX + 20 + "px");
+					//$("#note-" + id).css("height", $("#note-" + id)[0].scrollHeight);
+					$("#tooltipflote").show();
+				} else {
+					$("#tooltipflote").hide();
+				}
+			}
+		);
+		
+		$(".mark").live("mouseout",
+			function(ev) {
+				var id = $(this).attr("id").split("-")[1];
+				$("#tooltipflote").hide();
+			}
+		);
+
+		$(".mark").live("mousemove",
+			function(ev) {
+				$("#tooltipflote").css("top", ev.pageY - 30 + "px");
+				$("#tooltipflote").css("left", ev.pageX + 20 + "px");
+			}
+		);
 	});
 </script>
 
 <div id="tooltip" style="display: none; right: auto;"><div class="contain"><h3><span id="show-note"></span></h3></div></div>
+<div id="tooltipflote" style="display: none; right: auto;"><div class="contain"><h3><span id="show-flote"></span></h3></div></div>
 <div style="position: absolute; top: 65px; left: 0px; padding-left: 20px; width: 250px; color: #aaa;">
-	<h2 style="font-weight: normal; color: white">View feedback from:</h2>
+	<% if !@reviews.empty? %><h2 style="font-weight: normal; color: white">View feedback from:</h2><% end %>
 	<ul style="margin-top: 10px;">
 	<% @reviews.collect {|r| [r.signature, r.updated_at]}.each_with_index do |rev, i| %>
 		<li class="name" review_id="<%= i %>"><span style="font-size: 18px; line-height: 1.4em;"><%= (!rev[0].nil? ? rev[0] : "[anonymous]") %></span> <div style="font-size: 11px; line-height: 1em">&raquo; <%= rev[1].strftime('%a %b %d, %I:%M:%S%p').downcase %></div></li>

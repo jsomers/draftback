@@ -77,32 +77,32 @@ a.sentence.down.has_note {
 	background-color: #ffdddd;
 }
 
-a.sentence .heading {
+a.sentence .heading li {
 	color: #333;
 	text-decoration: none;
 }
 
-a.sentence.has_note .heading {
+a.sentence.has_note .heading li {
 	background-color: #eee;
 }
 
-a.sentence:hover .heading {
+a.sentence:hover .heading li {
 	background-color: #eee;
 }
 
-a.sentence.up .heading {
+a.sentence.up .heading li {
 	border-bottom: 1px solid #00b656;
 }
 
-a.sentence.up.has_note .heading {
+a.sentence.up.has_note .heading li {
 	background-color: #99ffaa;
 }
 
-a.sentence.down .heading { 
+a.sentence.down .heading li { 
 	border-bottom: 1px solid #ee2200;
 }
 
-a.sentence.down.has_note .heading {
+a.sentence.down.has_note .heading li {
 	background-color: #ffdddd;
 }
 
@@ -414,6 +414,7 @@ $(document).ready(function() {
 <textarea id="note" class="note" affect="neutral" style="width: 250px; position: absolute; display: none;"></textarea>
 <div id="mark" class="mark" style="position: absolute; display: none; font-size: 12px; color: #ff5544; z-index: 10">&#9679;</div>
 <div class="instructions">
+	<div style="float: right;"><a href="/drafts/refresh_review?public_url=<%= params[:id] %>&amp;draft_id=<%= @draft.id %>"><img src="/images/reload.png" alt="Refresh latest draft and clear markup" title="Refresh latest draft and clear markup"/></a></div>
 	<h2 style="margin: 2px 0px 5px 0px;">Instructions:</h2>
 	<ol style="font-size: 11px;">
 		<li>Click a sentence <strong>once</strong> if you like it and <strong>twice</strong> if you don't.</li>
@@ -423,7 +424,6 @@ $(document).ready(function() {
 </div>
 
 <div id="draft">
-	<div style="float: right; margin-top: 10px;"><a href="/drafts/refresh_review?public_url=<%= params[:id] %>&amp;draft_id=<%= @draft.id %>">Refresh latest draft and start over</a></div>
 	<h1 style="font-family: Arial; font-size: 22px; margin-top: 20px; line-height: 1.2em;"><a class="sentence" href="#" id="sent-0"><%= @draft.title %></a></h1>
 	<div id="draft_content">
 	<% if @content.nil? %>
