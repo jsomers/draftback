@@ -23,7 +23,7 @@ class Draft < ActiveRecord::Base
         sent = sentences[i] = sent.gsub("<p>", "")
         strt = true
       end
-      sentences[i] = '<a class="sentence" href="#" id="sent-' + i.to_s + '">' + sent.strip + '</a>'
+      sentences[i] = '<a class="sentence" href="#" id="sent-' + (i + 1).to_s + '">' + sent.strip + '</a>'
       if brk then sentences[i] = sentences[i].insert(0, "</p><p>") end
       if strt then sentences[i] = sentences[i].insert(0, "<p>") end
     end
