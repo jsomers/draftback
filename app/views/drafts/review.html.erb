@@ -167,6 +167,7 @@ a.sentence.down.has_note .heading li {
 <script type="text/javascript">
 var times = '<%= @n_zeros %>'.split('');
 var t = null;
+var x = null;
 
 var save_review = function(continuous) {
 	var content = $("#draft_content").html();
@@ -198,6 +199,37 @@ var hide_notes = function(affect) {
 			$(this).html($(this).val());
 		}
 	});
+};
+
+var hide_flote = function(flote, kill_if_content) {
+	if ($(flote).val() == "") {
+		if ($(flote).attr("id") != "flote") {
+			$(flote).remove();
+			$(flote).hide();
+			$("#mark-" + $(flote).attr("id").split("-")[1]).remove();
+			$("#mark-" + $(flote).attr("id").split("-")[1]).hide();
+		}
+	} else {
+		$(flote).html($(flote).val());
+		if (kill_if_content) {
+			$(flote).hide();
+		}
+		$mark = $("#mark-" + $(flote).attr("id").split("-")[1]);
+		if ($mark.length == 0) {
+			$mark = $("#mark").clone();
+			$mark.appendTo("#draft_content");
+			$mark.attr("id", "mark-" + $(flote).attr("id").split("-")[1]);
+		};
+		$mark.css("top", $(flote).css("top"));
+		$mark.css("left", $(flote).css("left"));
+		$mark.show();
+	}
+}
+
+var hide_flotes = function() {
+	$(".flote").each(function() {
+		hide_flote(this, false);
+	})
 };
 
 var send_review = function() {
@@ -234,6 +266,7 @@ $(document).ready(function() {
     var flote_count = 0;
     $("#draft").click(function(ev) {
     	if (ev.shiftKey) {
+			clearTimeout(x);
     		$flote = $("#flote").clone();
     		$flote.appendTo("#draft_content");
     		$flote.attr("id", "flote-" + flote_count);
@@ -243,6 +276,7 @@ $(document).ready(function() {
     		$flote.css("left", (ev.pageX - 10) + "px");
     		$flote.show();
     		$flote.focus();
+			x = setTimeout("hide_flotes(true)", 2000);
     	}
     });
 	
@@ -333,52 +367,15 @@ $(document).ready(function() {
 	
 	$(".flote").live("keydown", function(e) {
 		if (e.keyCode == 13) {
-			if ($(this).val() == "") {
-				if ($(this).attr("id") != "flote") {
-					$(this).remove();
-					$(this).hide();
-					$("#mark-" + $(this).attr("id").split("-")[1]).remove();
-					$("#mark-" + $(this).attr("id").split("-")[1]).hide();
-				}
-			} else {
-				$(this).html($(this).val());
-				$(this).hide();
-				$mark = $("#mark-" + $(this).attr("id").split("-")[1]);
-				if ($mark.length == 0) {
-					$mark = $("#mark").clone();
-					$mark.appendTo("#draft_content");
-					$mark.attr("id", "mark-" + $(this).attr("id").split("-")[1]);
-				};
-				$mark.css("top", $(this).css("top"));
-				$mark.css("left", $(this).css("left"));
-				$mark.show();
-			}
+			hide_flote(this, true);
 		};
 	});
 	
 	$(".sentence").click(function(ev) {
 		$(".flote").each(function() {
-			if ($(this).val() == "") {
-				if ($(this).attr("id") != "flote") {
-					$(this).remove();
-					$(this).hide();
-					$("#mark-" + $(this).attr("id").split("-")[1]).remove();
-					$("#mark-" + $(this).attr("id").split("-")[1]).hide();
-				}
-			} else {
-				$(this).html($(this).val());
-				$(this).hide();
-				$mark = $("#mark-" + $(this).attr("id").split("-")[1]);
-				if ($mark.length == 0) {
-					$mark = $("#mark").clone();
-					$mark.appendTo("#draft_content");
-					$mark.attr("id", "mark-" + $(this).attr("id").split("-")[1]);
-				};
-				$mark.css("top", $(this).css("top"));
-				$mark.css("left", $(this).css("left"));
-				$mark.show();
-			}
+			hide_flote(this, true);
 		});
+		clearTimeout(x);
 		clearTimeout(t);
 		$(".note").each(function(e) {
 			$(this).hide();
@@ -446,11 +443,12 @@ $(document).ready(function() {
 <div id="mark" class="mark" style="position: absolute; display: none; font-size: 12px; color: #ff5544; z-index: 10">&#9679;</div>
 <div class="instructions">
 	<div style="float: right;"><a href="/drafts/refresh_review?public_url=<%= params[:id] %>&amp;draft_id=<%= @draft.id %>"><img src="/images/reload.png" alt="Refresh latest draft and clear markup" title="Refresh latest draft and clear markup"/></a></div>
-	<h2 style="margin: 2px 0px 5px 0px;">Instructions:</h2>
-	<ol style="font-size: 11px;">
+	<h2 style="margin: 2px 0px 5px 0px; font-size: 18px;">How it works:</h2>
+	<ol style="font-size: 12px;">
 		<li>Click a sentence <strong>once</strong> if you like it and <strong>twice</strong> if you don't.</li>
 		<li>A window for <strong>quick notes</strong> will pop up in either case. <strong>Notes disappear</strong> if you don't type anything.</li>
-		<li>If you do leave comments, <strong>hit enter</strong> to close the note window. <strong>Everything will be saved automatically</strong>.</li>
+		<li>If you do leave comments, <strong>hit enter</strong> to close the note window. <strong>Everything will be saved automatically</strong>, once every 30 seconds.</li>
+		<li>If you <strong>hold shift and click</strong> anywhere inside the white area, a note window will pop up. Hit enter to close.</li>
 	</ol>
 </div>
 
