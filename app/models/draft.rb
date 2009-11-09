@@ -13,12 +13,20 @@ class Draft < ActiveRecord::Base
       strt, brk, ul, ol, li = false, false, false, false, false
       chars = ["?", ",", ".", ":", ";", "...", "''", "'"]
       sent = sentences[i] = sent.join(" ")
-      sent = sentences[i] = sent.gsub(/(``[^'']+$)/) {|s| "#{$1}\""}
+      if sentences[i + 1] and sentences[i + 1].join(" ").index(/<\/p>\s+<p>/)
+        sent = sentences[i] = sent.gsub(/([``|''][^'']+$)/) {|s| "#{$1}\""}
+      end
       sent = sentences[i] = sent.gsub("`` ", ' "').gsub("--", "&mdash;")
       chars.each {|chr| sent = sentences[i] = sent.gsub(" " + chr, chr)}
       if sent.index(/<\/p>\s+<p>/)
         sent = sentences[i] = sent.gsub(/<\/p>\s+<p>/) {|s| ""}
         brk = true
+      end
+      if sent.index("<em>") and !sent.index("</em>")
+        sent = sentences[i] = sent + "</em>"
+      end
+      if (sent.index("</em>") and sent.index("<em>") and sent.index("</em>") < sent.index("<em>")) or (sent.index("</em>") and !sent.index("<em>"))
+        sent = sentences[i] = sent.gsub(/(<\/em>.*?\s)/, "")
       end
       if sent.index("<p>")
         sent = sentences[i] = sent.gsub("<p>", "")
@@ -48,10 +56,14 @@ class Draft < ActiveRecord::Base
       end
     end
     glob = HTMLEntities.new.decode(sentences.compact.join(" "))
+    glob = glob.gsub(" n't", "n't")
+    glob = glob.gsub(/<em> (.*?) <\/em>/) {|s| "<em>#{$1}</em>"}
+    glob = glob.gsub(" !", "!")
     glob = glob.gsub(/<a class="sentence" href="#" id="sent\-\d">\.<\/a>/) {|s| ""}.gsub("</p>.", "</p>")
     glob = glob.gsub("< span style =", "<span class=\"heading\" style=").gsub("< \\\/ span >.", "</span>").gsub("< br >", "<br>").gsub("'' >", "\">")
     glob = glob.gsub("-LRB- ", "(").gsub(" -RRB-", ")")
     glob = glob.gsub("</p></a>", "</a></p>")
+    glob = glob.gsub(",'' ", ", \"")
     return {:content => glob, :n_sentences => "0" * (sentences.length + 1)}
   end
 end
