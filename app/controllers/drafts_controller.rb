@@ -33,7 +33,7 @@ class DraftsController < ApplicationController
       end
     end
     url = params[:draft_url]
-    public_url = Digest::SHA256.new.hexdigest(url).first(7)
+    public_url = Digest::SHA256.new.hexdigest(url).first(9)
     d = Draft.new(
       :user_id => (em ? u.id : nil),
       :url => url, 
@@ -70,6 +70,11 @@ class DraftsController < ApplicationController
     drft.updated_at = Time.new
     drft.save
     render :json => drft
+  end
+  
+  def random
+    url = Digest::SHA256.new.hexdigest(rand(9999999999999).to_s).first(9)
+    redirect_to "/" + url
   end
   
   def review

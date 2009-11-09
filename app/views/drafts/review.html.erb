@@ -238,7 +238,7 @@ var send_review = function() {
 		url: "/drafts/submit_review", 
 		data: ({ authenticity_token: AUTH_TOKEN, draft_id: <%= @draft.id %> }),
 		success: function(ret) {
-			alert("Sent!")
+			window.location = "/drafts/review_sent";
 		},
 		failure: function(ret) {
 			alert("Something went wrong! Try again in a second, or refresh the page.")
@@ -439,17 +439,18 @@ $(document).ready(function() {
 <div id="tooltip" style="display: none; right: auto;"><div class="contain"><h3><span id="show-note"></span></h3></div></div>
 <div id="tooltipflote" style="display: none; right: auto;"><div class="contain"><h3><span id="show-flote"></span></h3></div></div>
 <textarea id="flote" class="flote" affect="neutral" style="width: 250px; position: absolute; display: none; z-index: 999"></textarea>
-<textarea id="note" class="note" affect="neutral" style="width: 250px; position: absolute; display: none;"></textarea>
-<div id="mark" class="mark" style="position: absolute; display: none; font-size: 12px; color: #ff5544; z-index: 10">&#9679;</div>
+<textarea id="note" class="note" affect="neutral" style="width: 250px; position: absolute; display: none;z-index:11"></textarea>
+<div id="mark" class="mark" style="position: absolute; display: none; font-size: 12px; color: #ff5544; z-index: 10">&#10038;</div>
 <div class="instructions">
 	<div style="float: right;"><a href="/drafts/refresh_review?public_url=<%= params[:id] %>&amp;draft_id=<%= @draft.id %>"><img src="/images/reload.png" alt="Refresh latest draft and clear markup" title="Refresh latest draft and clear markup"/></a></div>
-	<ul style="font-size: 12px; font-family: Arial; list-style: disc inside">
+			<h3 style="margin: 0px; margin-bottom: 3px;">Tips:</h3>
+	<ol style="font-size: 12px; font-family: Arial;">
 		<li>Click a sentence <strong>once</strong> if you like it and <strong>twice</strong> if you don't. Notice the colored underlines.</li>
 		<li>A window for <strong>quick notes</strong> will pop up in either case. <strong>Notes disappear</strong> if you don't type anything.</li>
 		<li><strong>Hit enter</strong> to close note windows. <strong>Everything will be saved automatically</strong>, once every 30 seconds.</li>
-		<li>A box for <strong>freehand notes</strong> will pop up if you <strong>SHIFT-click</strong> anywhere in the white area.</li>
-		<li>To see notes, mouse over highlighted sentences or the little orange dots (<span style="font-size: 12px; color: #ff5544">&#9679;</span>). Click to edit.</li>
-	</ul>
+		<li>A box for <strong>freehand notes</strong> will pop up if you <strong>SHIFT-click</strong> anywhere in the white area. They leave <span style="font-size: 12px; color: #ff5544">&#10038;</span> marks.</li>
+		<li>To see notes, mouse over highlighted sentences or the little orange stars (<span style="font-size: 12px; color: #ff5544">&#10038;</span>). Click to edit.</li>
+	</ol>
 </div>
 
 <div id="draft">

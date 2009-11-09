@@ -331,7 +331,7 @@ $(document).ready(function() {
 <div id="tooltip" style="display: none; right: auto;"><div class="contain"><h3><span id="show-note"></span></h3></div></div>
 <div id="tooltipflote" style="display: none; right: auto;"><div class="contain"><h3><span id="show-flote"></span></h3></div></div>
 <textarea id="flote" class="flote" affect="neutral" style="width: 250px; position: absolute; display: none; z-index: 999"></textarea>
-<textarea id="flote-99" class="flote" affect="neutral" style="width: 250px; left: 600px; top: 210px; position: absolute; display: none; z-index: 999">This is a freehand note, designed for comments not tied to a particular sentence. Click me to edit.</textarea>
+<textarea id="flote-99" class="flote" affect="neutral" style="width: 250px; left: 600px; top: 210px; position: absolute; display: none; z-index: 999">Here's a freehand note, designed for comments not tied to a particular sentence. Click once to edit.</textarea>
 <textarea id="note" class="note" affect="neutral" style="width: 250px; position: absolute; display: none;z-index: 20"></textarea>
 
 <textarea id="note-0" class="note" affect="bad" style="width: 250px; position: absolute; display: none;">This sentence has a note, which is why it's highlighted. Click once to edit me!</textarea>
@@ -348,15 +348,16 @@ $(document).ready(function() {
 	</div>
 
 	<table id="draft_content">
-		<td width="700px" height="325px;" valign="top" id="draft">
+		<td width="700px" valign="top" id="draft">
 			<div id="demo_box" style="margin-top: 5px;">
 				<p><a class="sentence down has_note" href="#" id="sent-0"><strong>Warning:</strong> This box is a live demonstration.</a> <a class="sentence" href="#" id="sent-1">It works exactly like the page your friends and colleagues will see when they come to review <em>your</em> work.</a></p><br/>
 				
-				<p><a class="sentence" href="#" id="sent-2">For example, click a sentence once if you like it, twice if you don't.</a> <a class="sentence" href="#" id="sent-3">A box for taking notes will pop up.</a> <a class="sentence" href="#" id="sent-4">Don't worry if you've got nothing to say: notes just disappear if you ignore them.</a></p><br/>
+				<p><a class="sentence" href="#" id="sent-2">For example, click a sentence once if you like it, twice if you don't&mdash;a box for taking notes will pop up.</a> <a class="sentence" href="#" id="sent-3">Just type something in the text box and hit ENTER to close it.</a> <a class="sentence" href="#" id="sent-4">Don't worry if you've got nothing to say: notes just disappear if you ignore them.</a></p><br/>
 				
 				<p><a class="sentence" href="#" id="sent-5">Notice that orange star?</a> <a class="sentence" href="#" id="sent-6">It's a freehand note, designed for offhand comments not tied to a particular sentence.</a> <a class="sentence" href="#" id="sent-7">You can add your own anywhere in this box by <em>shift</em>-clicking.</a> <a class="sentence" href="#" id="sent-8">Just delete the text to get rid of them.</a></p><br/>
 				
-				<p><a class="sentence" href="#" id="sent-9">Honestly, that's about it.</a> <a class="sentence" href="#" id="sent-10">The interface is deliberately simple&mdash;the idea is to get <strong>more, better feedback from people by making the process really easy for them</strong>.</a> <a class="sentence" href="#" id="sent-11">(And for you, too.)</a></p>
+				<p><a class="sentence" href="#" id="sent-9">Honestly, that's about it.</a> <a class="sentence" href="#" id="sent-10">The interface is deliberately simple&mdash;the idea is to get <strong>more, better feedback from people by making the process really easy for them</strong>.</a> <a class="sentence" href="#" id="sent-11">(And for you, too.)</a></p><br/>
+				<p><a class="sentence" href="#" id="sent-12">So give it a shot: click the button below to set up your own draft.</a></p>
 			</div>
 		</td>
 		<td valign="top">
@@ -364,43 +365,27 @@ $(document).ready(function() {
 				<li>More convenient than pen and paper.</li>
 				<ul style="margin-left: 20px; font-family: Georgia; font-size: 14px; list-style: disc inside; color: #555">
 					<li>No print-outs, downloads, or sign-ups.</li>
-					<li>Instantly send "requests for feedback" to arbitrarily many people&mdash;just share the special URL that we make for you.</li>
+					<li>Instantly send requests for feedback to arbitrarily many people&mdash;just share the special URL that we make for you.</li>
 				</ul>
-				<li>&ldquo;Track changes?&rdquo; More like: &ldquo;make a big mess.&rdquo;</li>
+				<li>&ldquo;Track changes?&rdquo; More like: &ldquo;make a mess.&rdquo;</li>
 				<ul style="margin-left: 20px; font-family: Georgia; font-size: 14px; list-style: disc inside; color: #555">
 					<li>No more pages full of red or notes that fill up the margin. No more endless clicking or overly complicated menu choices.</li>
 				</ul>
-				<li>At-a-glance feedback. <a href="/feedback/demo">See an example.</a></li>
+				<li>At-a-glance feedback: <a href="/feedback/demo" target="_blank">See an example.</a></li>
 				<ul style="margin-left: 20px; font-family: Georgia; font-size: 14px; list-style: disc inside; color: #555">
 					<li>See everyone who's reviewed your work all at once. Rapidly switch between reviews&mdash;easily see patterns.</li>
-					<li>Colorful markup makes scanning easy: green is good, red is bad.</li>
+					<li>Colorful markup makes scanning easy: <span style="background-color: #99ffaa; border-bottom: 1px solid #00b656;">green is good</span>, <span style="border-bottom: 1px solid #ee2200; background-color: #ffdddd;">red is bad.</li>
+				</ul>
+				<li>Room for one more?</li>
+				<ul style="margin-left: 20px; font-family: Georgia; font-size: 14px; list-style: disc inside; color: #555">
+					<li>There's enough space here to make another point.</li>
 				</ul>
 				</ul>
 			</ul>
 		</td>
 	</table>
 
-	<div id="play_now_button" style="margin:0 auto; text-align: center;">
-		<a href="/play/start">Create a draft!</a>
+	<div id="play_now_button" style="margin:0 auto; margin-top: 10px; text-align: center;">
+		<a href="/drafts/random">Create a draft!</a>
 	</div>
-<table style="width: 100%; border-top: 5px solid #ccc; margin-top: 30px;">
-	<tr>
-		<td valign="top" width="270px;">
-			<h2>Step 1: Write</h2>
-			<p>Compose your draft in style, using a <strong>simple and <br/>beautiful rich-text editor</strong>.</p>
-			<img src="/images/step-1.png" style="margin-left: 10px;"/>
-			<td width="1px;"><img src="/images/vert-line.png" style="margin-top: 60px;"/></td>
-		</td>
-		<td valign="top" width="500px;">
-			<div style="margin-left: 10px;">
-			<h2>Step 2: Go easy on your friends</h2>
-			<p>Once your draft is ready, we create a special reviewing page that you can share with friends and colleagues. It lets them <strong>edit at the speed of reading</strong>. <a href="" style="font-weight: bold;">Try the demo!</a></p>
-			</div>
-		</td>
-		<td valign="top" width="300px;">
-			<h2>Step 3: Learn</h2>
-			<p>See at a glance</p>
-		</td>
-	</tr>
-</table>
 </div>
