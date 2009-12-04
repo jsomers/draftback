@@ -2,6 +2,7 @@ default_run_options[:pty] = true
 set :application, "draftback"
 set :repository,  "git@github.com:jsomers/draftback.git"
 set :scm, "git"
+
 # Command to load new code: touch /home/james/public_html/jeopardy/current/tmp/restart.txt
 # set :scm_passphrase, "D0nkeyB0nkers!" # This is your custom user's password
 set :branch, "master"
@@ -9,6 +10,7 @@ set :user, "james"
 set :deploy_via, :remote_cache
 set :port, 30000
 
+set :admin_runner, "james"
 set :runner, "james"
 
 # If you aren't deploying to /u/apps/#{application} on the target
