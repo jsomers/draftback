@@ -15,3 +15,4 @@ config.action_controller.perform_caching             = false
 
 # Don't care if the mailer can't send
 config.action_mailer.raise_delivery_errors = false
+BASE_URL = "0.0.0.0:3000"

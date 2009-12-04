@@ -19,8 +19,7 @@ Rails::Initializer.run do |config|
   config.gem 'treebank'
   config.gem 'stanfordparser'
   config.gem 'htmlentities'
-  
-  ENV["JAVA_HOME"] = "/usr/lib/jvm/java-6-openjdk"
+
   # config.gem "bj"
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "sqlite3-ruby", :lib => "sqlite3"

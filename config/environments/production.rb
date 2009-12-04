@@ -9,6 +9,8 @@ config.action_controller.consider_all_requests_local = false
 config.action_controller.perform_caching             = true
 config.action_view.cache_template_loading            = true
 
+ENV["JAVA_HOME"] = "/usr/lib/jvm/java-6-openjdk"
+BASE_URL = "draftback.com"
 # See everything in the log (default is :info)
 # config.log_level = :debug
 
