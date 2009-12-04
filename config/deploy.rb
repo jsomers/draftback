@@ -31,6 +31,7 @@ namespace :deploy do
   desc "Restarting mod_rails with restart.txt"
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "touch /home/james/public_html/draftback/current/tmp/restart.txt"
+#    run "cp /home/james/public_html/draftback/current/db/development.sqlite3"
   end
   
   task :start do
